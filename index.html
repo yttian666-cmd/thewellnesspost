@@ -1,0 +1,1023 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Wellness Post - Health Information You Can Trust</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #212529;
+      --accent: #0D7680;
+      --surface: #F8F9FA;
+      --muted: #6C757D;
+      --border: #DEE2E6;
+      --red: #DC3545;
+      --font-display: Georgia, 'Times New Roman', serif;
+      --font-body: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --radius: 4px;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased}
+    a{color:inherit;text-decoration:none}
+    img,video{display:block;max-width:100%}
+    button,input{font:inherit}
+    .wrap{width:min(1180px,calc(100% - 40px));margin:0 auto}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    .label{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:6px;display:block}
+    .btn{border:1px solid var(--accent);background:var(--accent);color:var(--bg);border-radius:4px;min-height:38px;padding:0 18px;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;font-size:13px;font-weight:700;white-space:nowrap}
+    .btn:hover{filter:brightness(1.06)}
+    .btn.outline{background:var(--bg);color:var(--accent)}
+
+    /* ===== HEADER - centered, shrinks on scroll ===== */
+    .masthead{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--border);transition:all 0.3s ease}
+    .masthead .wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:110px;gap:12px;padding:8px 0;transition:all 0.3s ease}
+    .brand{font-family:var(--font-display);font-size:28px;font-weight:700;letter-spacing:-.02em;color:var(--accent);white-space:nowrap;transition:all 0.3s ease}
+    .tagline{font-size:12px;color:var(--muted);transition:all 0.3s ease}
+    .search-box{display:flex;align-items:center;gap:4px;padding:4px 4px 4px 10px;border:1px solid var(--border);border-radius:999px;background:var(--bg);width:124px;transition:all 0.3s ease}
+    .search-box input{width:100%;border:0;background:transparent;color:var(--fg);font-size:12px}
+    .search-box input::placeholder{color:var(--muted)}
+    .search-icon{color:var(--red);flex-shrink:0;cursor:pointer;display:flex;align-items:center}
+    .signin-btn{width:36px;height:36px;border:1px solid var(--border);border-radius:50%;background:var(--bg);color:var(--fg);display:grid;place-items:center;cursor:pointer;flex-shrink:0;transition:color .2s ease,border-color .2s ease,background .2s ease}
+    .signin-btn:hover,.signin-btn:focus-visible{color:var(--accent);border-color:var(--accent);background:var(--surface);outline:0}
+    .nav-row{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(150px,1fr);align-items:center;column-gap:14px;width:100%;max-width:100%}
+    .mobile-nav-toggle{display:none}
+    .navlinks{grid-column:2;display:flex;align-items:center;justify-content:center;gap:2px;overflow:visible;font-size:12px;font-weight:700;white-space:nowrap;transition:all 0.3s ease;justify-self:center;max-width:100%}
+    .nav-actions{grid-column:3;display:flex;align-items:center;justify-content:flex-end;justify-self:end;gap:8px;min-width:0}
+    .navlinks a{padding:6px 10px;color:var(--fg)}
+    .navlinks a:hover,.navlinks a.active{color:var(--accent)}
+    .navsep{color:var(--border);font-size:14px;user-select:none}
+
+    /* Shrunk state */
+    .masthead.shrunk .wrap{flex-direction:row;justify-content:space-between;min-height:48px;gap:16px;padding:4px 0}
+    .masthead.shrunk .brand{font-size:20px}
+    .masthead.shrunk .tagline{display:none}
+    .masthead.shrunk .nav-row{flex:1 1 auto;min-width:0;width:auto;grid-template-columns:minmax(0,1fr) auto minmax(150px,1fr);column-gap:10px}
+    .masthead.shrunk .nav-row::before{display:none}
+    .masthead.shrunk .navlinks{justify-content:center;justify-self:center;max-width:100%}
+    .masthead.shrunk .search-box{width:104px;font-size:12px}
+    .masthead.shrunk .hdr-group{display:flex;align-items:baseline;gap:6px;flex:0 0 auto;min-width:max-content}
+    .hdr-group{display:flex;align-items:baseline;gap:6px}
+
+    /* ===== SIGN IN MODAL ===== */
+    .signin-modal{position:fixed;inset:0;z-index:60;display:none;align-items:flex-start;justify-content:flex-end;padding:82px max(20px,calc((100vw - 1180px)/2)) 20px;background:transparent}
+    .signin-modal.is-open{display:flex}
+    .signin-panel{width:min(360px,calc(100vw - 40px));border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);box-shadow:0 2px 8px rgba(0,0,0,.06);padding:20px;display:grid;gap:14px}
+    .signin-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px}
+    .signin-head h2{font-family:var(--font-display);font-size:24px;line-height:1.1;letter-spacing:-.01em;margin:0}
+    .signin-head p{font-size:13px;color:var(--muted);line-height:1.45;margin:6px 0 0}
+    .signin-close{width:32px;height:32px;border:1px solid var(--border);border-radius:50%;background:var(--bg);color:var(--fg);display:grid;place-items:center;cursor:pointer;flex-shrink:0}
+    .signin-close:hover,.signin-close:focus-visible{color:var(--red);border-color:var(--red);outline:0}
+    .signin-form{display:grid;gap:10px}
+    .signin-field{display:grid;gap:5px}
+    .signin-field label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+    .signin-field input{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);padding:10px 12px;font-size:14px}
+    .signin-field input:focus{border-color:var(--accent);outline:2px solid var(--border);outline-offset:1px}
+    .signin-note{font-size:11px;color:var(--muted);line-height:1.4}
+    .signin-status{min-height:18px;font-size:12px;font-weight:700;color:var(--accent)}
+
+    /* ===== HEALTH TIPS TICKER ===== */
+    .ticker{background:var(--accent);overflow:hidden;white-space:nowrap;position:relative}
+    .ticker-wrap{display:flex;align-items:center;gap:0}
+    .ticker-label{background:var(--accent);color:var(--bg);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;flex-shrink:0;z-index:2;border-right:1px solid rgba(255,255,255,.25)}
+    .ticker-track{overflow:hidden;flex:1;position:relative}
+    .ticker-text{display:inline-block;white-space:nowrap;color:var(--bg);font-size:13px;padding:8px 0;animation:ticker-scroll 60s linear infinite}
+    .ticker-text span{padding:0 48px}
+    @keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+    /* ===== AD BAR ===== */
+    .ad-bar{border-bottom:1px solid var(--border);background:var(--surface)}
+    .ad-bar .wrap{display:flex;align-items:center;justify-content:center;min-height:90px;padding:14px 0}
+    .ad-unit{display:flex;align-items:center;gap:22px;max-width:800px;width:100%}
+    .ad-block{width:120px;height:66px;background:var(--accent);border-radius:var(--radius);display:grid;place-items:center;color:var(--bg);font-weight:700;font-size:11px;letter-spacing:.06em;text-align:center;flex-shrink:0}
+    .ad-badge{background:var(--red);color:var(--bg);font-size:10px;font-weight:700;letter-spacing:.1em;padding:2px 8px;border-radius:3px;text-transform:uppercase;display:inline-block;margin-bottom:4px}
+    .ad-unit h4{font-size:17px;line-height:1.2;margin:0 0 2px}
+    .ad-unit p{margin:0;font-size:13px;color:var(--muted)}
+    .ad-price{font-size:22px;font-weight:700;color:var(--accent)}
+    .banner-ad-frame{width:min(800px,100%);height:clamp(92px,12vw,132px);border-radius:var(--radius);overflow:hidden;background:var(--bg);border:1px solid var(--border)}
+    .banner-ad-frame img{width:100%;height:100%;display:block;object-fit:contain}
+
+    /* ===== MAIN LAYOUT ===== */
+    .content-grid{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:36px;padding:32px 0 0}
+    .sidebar{display:grid;gap:20px;align-content:start;position:relative}
+
+    /* ===== FEATURED ARTICLE (like VWH hero card) ===== */
+    .featured{display:block;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg);margin-bottom:36px}
+    .featured:hover h1{color:var(--red)}
+    .featured:hover .featured-img img{transform:scale(1.04)}
+    .featured-img{aspect-ratio:16/7;background:var(--surface);border-bottom:1px solid var(--border);overflow:hidden}
+    .featured-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease}
+    .featured-body{padding:24px 28px 20px;display:grid;gap:10px}
+    .featured-body h1{font-family:var(--font-display);font-size:clamp(28px,3.5vw,40px);line-height:1.12;letter-spacing:-.02em;font-weight:700;margin:0}
+    .featured-body>p{font-size:15px;color:var(--muted);margin:0;line-height:1.5}
+    .reviewed{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted);padding-top:4px}
+
+    /* ===== FEATURE ROWS (Nutri&Well) ===== */
+    .feature-list { display: grid; gap: 12px; }
+    .feature-row { display: grid; grid-template-columns: 140px 1fr; gap: 18px; align-items: center; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); padding: 14px; }
+    .feature-row:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.05); }
+    .feature-row:hover h3{color:var(--red)}
+    .feature-row:hover .image img{transform:scale(1.06)}
+    .feature-row .image { aspect-ratio: 1 / 1; border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+    .feature-row .image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; }
+    .feature-row .ft-label { font-size: 11px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+    .feature-row h3 { margin: 0 0 8px; font-family: var(--font-display); font-size: 18px; line-height: 1.2; letter-spacing: -0.01em; font-weight: 700; }
+    .feature-row p { margin: 0; font-size: 13px; color: var(--muted); line-height: 1.4; }
+    .feature-row .ft-meta { font-size: 12px; margin-top: 8px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
+    .feature-row .ft-by { color: var(--red); font-weight: 700; }
+    .feature-row .ft-source { color: var(--muted); }
+    .reviewed-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+    .reviewed strong{font-weight:700;color:var(--fg)}
+    .byline{font-size:12px;color:var(--muted)}
+    .byline strong{font-weight:700;color:var(--fg)}
+
+    /* ===== SECTION HEADER ===== */
+    .sec-head{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:18px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+    .sec-head h2{font-family:var(--font-display);font-size:26px;font-weight:700;letter-spacing:-.01em;margin:0;color:var(--accent)}
+
+    /* ===== CARD GRID (3-col) ===== */
+    .card-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-bottom:36px}
+    .featured-stories-layout{display:grid;grid-template-columns:minmax(0,2fr) minmax(0,1fr);gap:36px;align-items:start;margin:44px 0 36px}
+    .featured-stories-section{margin-top:0}
+    .card-row.featured-stories{grid-template-columns:repeat(2,minmax(0,1fr))}
+    .featured-stories-layout .card-row{margin-bottom:0}
+    .card{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);overflow:hidden;display:flex;flex-direction:column}
+    .card:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .card:hover h3{color:var(--red)}
+    .card:hover .card-img img{transform:scale(1.06)}
+    .card-img{aspect-ratio:16/10;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;overflow:hidden}
+    .card-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s ease}
+    .card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:6px}
+    .card-body h3{font-family:var(--font-display);font-size:18px;font-weight:700;line-height:1.2;letter-spacing:-.01em;margin:0}
+    .card-body p{font-size:13px;color:var(--muted);line-height:1.45;margin:0}
+    .card-meta{font-size:11px;color:var(--muted);margin-top:auto;padding-top:4px}
+
+    /* ===== SUPPLEMENT RECOMMENDER ===== */
+    .supplement-reel{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);margin:0 0 36px;overflow:hidden}
+    .supplement-reel .reel-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;padding:18px 20px;border-bottom:1px solid var(--border);background:var(--surface)}
+    .supplement-reel h2{font-family:var(--font-display);font-size:24px;line-height:1.12;letter-spacing:-.01em;margin:0;color:var(--accent)}
+    .supplement-reel .reel-kicker{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+    .supplement-reel .reel-count{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;color:var(--muted);white-space:nowrap}
+    .supplement-stage{display:grid;grid-template-columns:minmax(240px,.86fr) minmax(0,1.14fr);gap:0;min-height:310px}
+    .supplement-media{position:relative;display:grid;place-items:center;background:var(--surface);border-right:1px solid var(--border);padding:20px;overflow:hidden}
+    .supplement-media img{width:min(100%,360px);height:260px;object-fit:contain;transition:opacity .18s ease,transform .24s ease}
+    .supplement-media img.is-changing{opacity:.24;transform:translateX(8px)}
+    .supplement-copy{padding:24px;display:grid;align-content:center;gap:14px}
+    .supplement-copy h3{font-family:var(--font-display);font-size:24px;line-height:1.16;letter-spacing:-.01em;margin:0;color:var(--fg)}
+    .supplement-copy p{font-size:14px;line-height:1.55;color:var(--muted);margin:0;max-width:62ch}
+    .supplement-controls{display:flex;align-items:center;gap:10px;padding-top:6px}
+    .supplement-controls button{width:42px;height:42px;border:1px solid var(--border);border-radius:50%;background:var(--bg);color:var(--fg);font-size:25px;line-height:1;display:grid;place-items:center;cursor:pointer}
+    .supplement-controls button:hover{border-color:var(--accent);color:var(--accent)}
+    .supplement-dots{display:flex;align-items:center;gap:7px;margin-left:4px}
+    .supplement-dot{width:8px;height:8px;border-radius:50%;border:1px solid var(--border);background:var(--bg)}
+    .supplement-dot.is-active{background:var(--accent);border-color:var(--accent)}
+
+    /* ===== MEDICAL MYTHS FEATURE ===== */
+    .medical-myths{margin:0 0 36px}
+    .myths-layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(320px,.92fr);gap:28px;align-items:stretch}
+    .myths-lead-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;height:100%}
+    .myth-lead,.myth-row{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);overflow:hidden}
+    .myth-lead{display:flex;flex-direction:column}
+    .myth-lead:hover,.myth-row:hover{box-shadow:0 2px 8px rgba(0,0,0,.06)}
+    .myth-lead:hover h3,.myth-row:hover h3{color:var(--red)}
+    .myth-lead:hover img,.myth-row:hover img{transform:scale(1.05)}
+    .myth-img{background:var(--surface);overflow:hidden;border-bottom:1px solid var(--border)}
+    .myth-img img{width:100%;height:100%;object-fit:cover;transition:transform .3s ease}
+    .myth-lead .myth-img{aspect-ratio:16/11}
+    .myth-body{padding:14px 16px 16px;display:grid;gap:7px}
+    .myth-body h3{font-family:var(--font-display);font-size:20px;line-height:1.17;letter-spacing:-.01em;margin:0}
+    .myth-body p{font-size:13px;color:var(--muted);line-height:1.45;margin:0}
+    .myth-stack{display:grid;gap:14px}
+    .myth-row{display:grid;grid-template-columns:150px 1fr;gap:0;min-height:128px}
+    .myth-row .myth-img{aspect-ratio:auto;border-bottom:0;border-right:1px solid var(--border)}
+    .myth-row .myth-body{padding:12px 14px}
+    .myth-row .myth-body h3{font-size:17px}
+    @media(min-width:961px){.myth-lead{min-height:100%}.myth-lead .myth-img{aspect-ratio:auto;min-height:300px;flex:1 1 auto}.myth-lead .myth-body{flex:0 0 auto}}
+
+    /* ===== NUMBERED LIST (left column) ===== */
+    .num-list{counter-reset:num;display:grid;gap:0;margin-bottom:12px}
+    .num-list a{counter-increment:num;display:grid;grid-template-columns:28px 1fr;gap:12px;padding:14px 0;border-bottom:1px solid var(--border);align-items:start}
+    .num-list a:last-child{border-bottom:0;padding-bottom:0}
+    .num-list a::before{content:counter(num);color:var(--accent);font-weight:700;font-size:18px;text-align:center;line-height:1.2}
+    .num-list h3{font-family:var(--font-display);font-size:16px;font-weight:700;line-height:1.25;margin:0 0 4px}
+    .num-list p{font-size:13px;color:var(--muted);margin:0}
+
+    /* ===== SIDEBAR WIDGETS ===== */
+    .widget{border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;background:var(--bg)}
+    .widget h3{font-family:var(--font-display);font-size:17px;font-weight:700;margin:0 0 12px}
+    .widget .ranked{display:grid;gap:0}
+    .widget .ranked a{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);font-size:13px;font-weight:650;line-height:1.3}
+    .widget .ranked a:first-child{padding-top:0}
+    .widget .ranked a:last-child{border-bottom:0;padding-bottom:0}
+    .widget .ranked a:hover{color:var(--accent)}
+    .widget .ranked .rn{color:var(--accent);font-weight:700;font-size:16px;text-align:center;line-height:1.1}
+
+    .health-topics-column{display:grid;gap:56px}
+    .health-topics-panel{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:18px 0 4px;margin-top:14px;background:var(--bg)}
+    .health-topics-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    .health-topics-head h3{font-family:var(--font-body);font-size:20px;line-height:1.1;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin:0;color:var(--accent)}
+    .health-topics-head a{display:inline-grid;place-items:center;width:34px;height:34px;border:1px solid var(--accent);border-radius:50%;color:var(--accent)}
+    .health-topics-list{display:grid}
+    .health-topics-list a{display:block;padding:16px 0;border-bottom:1px solid var(--border);font-size:16px;line-height:1.28;font-weight:650}
+    .health-topics-list a:last-child{border-bottom:0}
+    .health-topics-list a:hover{color:var(--red)}
+
+    .reader-poll{border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);padding:18px;text-align:left}
+    .reader-poll h3{font-family:var(--font-display);font-size:18px;line-height:1.16;font-weight:700;margin:0;color:var(--fg)}
+    .reader-poll .poll-intro{font-size:13px;line-height:1.45;color:var(--muted);margin:6px 0 14px}
+    .poll-options{display:grid;gap:10px}
+    .poll-option{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);padding:10px 11px;display:grid;gap:7px;text-align:left;cursor:pointer;transition:border-color .2s ease,background .2s ease}
+    .poll-option:hover,.poll-option:focus-visible{border-color:var(--accent);outline:0}
+    .poll-option.is-selected{border-color:var(--accent);background:var(--bg)}
+    .poll-line{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:13px;font-weight:750;line-height:1.25}
+    .poll-percent{font-variant-numeric:tabular-nums;color:var(--accent);visibility:hidden}
+    .reader-poll.has-voted .poll-percent{visibility:visible}
+    .poll-bar{height:6px;border-radius:999px;background:var(--border);overflow:hidden}
+    .poll-fill{display:block;width:0;height:100%;background:var(--accent);transition:width .45s ease}
+    .reader-poll.has-voted .poll-fill{width:var(--result)}
+    .poll-other{margin-top:14px;display:grid;gap:6px}
+    .poll-other label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+    .poll-other-row{display:grid;grid-template-columns:1fr auto auto;gap:8px;align-items:center}
+    .poll-other input{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);padding:10px 11px;font-size:13px}
+    .poll-other input:focus{border-color:var(--accent);outline:2px solid var(--border);outline-offset:1px}
+    .poll-other button{border:1px solid var(--accent);border-radius:var(--radius);background:var(--accent);color:var(--surface);padding:10px 12px;font-size:12px;font-weight:800;letter-spacing:.02em;cursor:pointer}
+    .poll-other button:hover,.poll-other button:focus-visible{filter:brightness(.94);outline:2px solid var(--border);outline-offset:1px}
+    .poll-submit-status{min-width:96px;min-height:18px;font-size:12px;line-height:1.4;color:var(--accent);font-weight:700;white-space:nowrap}
+    .poll-submit-status .check{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1px solid var(--accent);margin-right:5px;font-size:11px}
+    .poll-status{min-height:18px;margin-top:10px;font-size:12px;line-height:1.4;color:var(--muted)}
+    .weather-widget{background:var(--surface);padding-left:20px}
+    .weather-widget + .hospital-widget{margin-top:54px}
+    .hospital-widget{border:1px solid var(--border);border-radius:var(--radius);padding:18px;background:var(--surface);text-align:left}
+    .hospital-widget h3{font-family:var(--font-display);font-size:18px;font-weight:700;margin:0 0 4px;color:var(--fg)}
+    .hospital-widget .hospital-intro{font-size:13px;color:var(--muted);margin:0 0 14px;line-height:1.45}
+    .hospital-list{display:grid;gap:12px}
+    .hospital-card{border-top:1px solid var(--border);padding-top:12px;display:grid;gap:6px}
+    .hospital-card:first-child{border-top:0;padding-top:0}
+    .hospital-card h4{font-size:14px;line-height:1.25;margin:0;font-weight:750;color:var(--fg)}
+    .hospital-card .resource-type{font-size:10px;line-height:1;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);font-weight:800}
+    .hospital-meta{display:grid;gap:3px;font-size:12px;line-height:1.4;color:var(--muted)}
+    .hospital-meta strong{color:var(--fg);font-weight:700}
+    .hospital-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:2px}
+    .hospital-actions a{min-height:32px;padding:0 11px;border:1px solid var(--border);border-radius:4px;display:inline-flex;align-items:center;font-size:12px;font-weight:700;color:var(--fg);background:var(--bg)}
+    .hospital-actions a.primary{border-color:var(--accent);background:var(--accent);color:var(--bg)}
+    .hospital-note{font-size:11px;line-height:1.45;color:var(--muted);margin:12px 0 0}
+
+    .hospital-widget + .sidebar-ad-slot{margin-top:96px}
+    .sidebar-ad-slot{position:sticky;top:64px;align-self:start}
+    .side-ad{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--bg)}
+    .side-ad .sa-top{min-height:200px;display:grid;place-items:center;color:var(--bg);text-align:center;padding:20px;position:relative;overflow:hidden}
+    .side-ad .sa-top::before{content:'';position:absolute;inset:0;background:var(--accent);opacity:.85}
+    .side-ad .sa-top>div{position:relative;z-index:1}
+    .side-ad .sa-top h3{font-size:20px;font-weight:700;margin:0}
+    .side-ad .sa-bot{padding:14px;text-align:center;display:grid;gap:8px;font-size:13px}
+
+    /* ===== TOPICS ROW ===== */
+    .topics-row{display:flex;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:40px}
+    .topics-row a{flex:1;background:var(--bg);padding:18px 10px;text-align:center;font-family:var(--font-display);font-size:14px;font-weight:700;display:grid;gap:2px;align-content:center}
+    .topics-row a:hover{background:var(--surface)}
+    .topics-row a span{font-size:11px;color:var(--muted);font-weight:400;font-family:var(--font-body)}
+
+    /* ===== READER COMMENTS ===== */
+    .reader-comments{border:1px solid var(--border);border-radius:var(--radius);padding:24px 28px;background:var(--surface);margin-bottom:40px;display:grid;gap:20px}
+    .reader-comments-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;border-bottom:1px solid var(--border);padding-bottom:16px}
+    .reader-comments h3{font-family:var(--font-display);font-size:22px;font-weight:700;line-height:1.18;letter-spacing:-.01em;margin:0 0 6px;color:var(--fg)}
+    .reader-comments .comment-intro{font-size:14px;color:var(--muted);line-height:1.55;margin:0;max-width:68ch}
+    .comment-count{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);white-space:nowrap;margin-top:4px}
+    .comment-list{display:grid;gap:12px;max-height:460px;overflow-y:auto;padding-right:6px;overscroll-behavior:contain}
+    .comment-list::-webkit-scrollbar{width:8px}
+    .comment-list::-webkit-scrollbar-track{background:var(--surface);border-radius:999px}
+    .comment-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+    .comment-item{border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);padding:15px 16px;display:grid;gap:8px}
+    .comment-meta{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:12px;color:var(--muted);line-height:1.3}
+    .comment-meta strong{font-size:13px;color:var(--fg);font-weight:800}
+    .comment-time{white-space:nowrap;color:var(--muted)}
+    .comment-item p{font-size:14px;color:var(--fg);line-height:1.55;margin:0}
+    .comment-form{display:grid;gap:12px;border-top:1px solid var(--border);padding-top:18px}
+    .comment-form-row{display:grid;grid-template-columns:minmax(180px,.45fr) minmax(0,1fr);gap:12px}
+    .comment-field{display:grid;gap:6px}
+    .comment-field label{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+    .comment-field input,.comment-field textarea{width:100%;border:1px solid var(--border);border-radius:var(--radius);background:var(--bg);color:var(--fg);padding:10px 11px;font-size:14px}
+    .comment-field textarea{min-height:96px;resize:vertical}
+    .comment-field input:focus,.comment-field textarea:focus{border-color:var(--accent);outline:2px solid var(--border);outline-offset:1px}
+    .comment-actions{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
+    .comment-status{min-height:18px;font-size:12px;color:var(--muted);line-height:1.4}
+
+    /* ===== OUR TEAM ===== */
+    .team-showcase{background:var(--fg);color:var(--bg);border-radius:var(--radius);padding:16px 18px 18px;margin:0 0 32px;display:grid;gap:12px;overflow:hidden;position:relative}
+    .team-showcase::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,color-mix(in oklch,var(--accent) 24%,transparent),transparent 58%);pointer-events:none}
+    .team-showcase>*{position:relative;z-index:1}
+    .team-head{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:end;border-bottom:1px solid color-mix(in oklch,var(--bg) 18%,transparent);padding-bottom:8px}
+    .team-kicker{font-size:9.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin:0 0 4px}
+    .team-head h2{font-family:var(--font-display);font-size:clamp(22px,2.4vw,28px);line-height:1.08;letter-spacing:-.02em;margin:0}
+    .team-head p{max-width:60ch;font-size:12px;line-height:1.42;color:var(--border);margin:4px 0 0}
+    .team-badge{border:1px solid color-mix(in oklch,var(--bg) 22%,transparent);border-radius:999px;padding:6px 9px;font-size:9.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--bg);white-space:nowrap}
+    .team-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+    .team-card{background:var(--bg);color:var(--fg);border:1px solid color-mix(in oklch,var(--bg) 30%,var(--border));border-radius:var(--radius);overflow:hidden;display:grid;grid-template-columns:1fr;align-items:start}
+    .team-photo{width:100%;aspect-ratio:1/1.08;background:var(--surface);overflow:hidden}
+    .team-photo img{width:100%;height:100%;object-fit:cover;display:block}
+    .team-card:nth-child(1) .team-photo img{object-position:center 38%}
+    .team-card:nth-child(4) .team-photo img{object-position:center 42%}
+    .team-copy{padding:12px 12px 14px;display:grid;align-content:start;justify-items:start;gap:6px;text-align:left}
+    .team-copy h3{font-family:var(--font-display);font-size:18px;line-height:1.12;letter-spacing:-.01em;margin:0}
+    .team-role{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin:0;display:grid;gap:2px;justify-items:start;text-align:left}
+    .team-role span{display:block}
+    .team-copy p{font-size:12px;line-height:1.45;color:var(--muted);margin:0}
+
+    /* ===== FOOTER ===== */
+    .footer{background:var(--fg);color:var(--border);padding:48px 0 0}
+    .footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;padding-bottom:40px}
+    .footer h4{color:var(--bg);font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px}
+    .footer-links{display:grid;gap:7px}
+    .footer-links a{color:var(--muted);font-size:14px}
+    .footer-links a:hover{color:var(--bg)}
+    .ft-nl{display:grid;gap:8px}
+    .ft-nl p{font-size:14px;color:var(--muted);margin:0}
+    .ft-nl form{display:flex;gap:8px}
+    .ft-nl input{flex:1;border:1px solid var(--muted);border-radius:4px;padding:9px 12px;font-size:13px;background:transparent;color:var(--bg)}
+    .ft-nl input::placeholder{color:var(--muted)}
+    .social-links{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .social-links a{width:38px;height:38px;border:1px solid var(--muted);border-radius:50%;display:grid;place-items:center;color:var(--bg);font-size:12px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;background:transparent;transition:background .18s,border-color .18s,color .18s,transform .18s}
+    .social-links a:hover,.social-links a:focus-visible{background:var(--accent);border-color:var(--accent);color:var(--bg);transform:translateY(-1px);outline:none}
+    .social-links svg{width:17px;height:17px;display:block}
+    .footer-legal{border-top:1px solid var(--muted);padding:20px 0 28px;display:flex;justify-content:space-between;gap:16px;font-size:11px;color:var(--muted);flex-wrap:wrap}
+    .footer-legal a{color:var(--muted);text-decoration:underline}
+    .footer-legal a:hover{color:var(--bg)}
+
+    /* ===== RESPONSIVE ===== */
+    @media(max-width:1024px) and (min-width:761px){.masthead.shrunk .wrap{gap:10px}.masthead.shrunk .brand{font-size:18px}.masthead.shrunk .nav-row{grid-template-columns:minmax(0,1fr) auto;column-gap:10px}.masthead.shrunk .navlinks{grid-column:1;justify-content:flex-start;gap:0;font-size:10px;overflow:hidden}.masthead.shrunk .navlinks a{padding:5px 5px}.masthead.shrunk .navsep{font-size:11px}.masthead.shrunk .nav-actions{grid-column:2;min-width:142px}.masthead.shrunk .search-box{width:98px}.masthead.shrunk .signin-btn{width:34px;height:34px}}
+    @media(max-width:960px){.content-grid,.featured-stories-layout,.myths-layout{grid-template-columns:1fr}.sidebar-ad-slot{position:static}.card-row.featured-stories{grid-template-columns:repeat(2,minmax(0,1fr))}.team-head{grid-template-columns:1fr}.team-badge{justify-self:start}.team-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:720px){.card-row,.card-row.featured-stories,.myths-lead-grid,.supplement-stage,.comment-form-row{grid-template-columns:1fr}.supplement-media{border-right:0;border-bottom:1px solid var(--border)}.supplement-media img{height:220px}.topics-row{flex-wrap:wrap}.topics-row a{flex:1 1 33%}.footer-grid{grid-template-columns:1fr}.reader-comments-head{display:grid}.comment-count{margin-top:0}.team-showcase{padding:16px 14px}.team-grid{grid-template-columns:1fr}.team-copy{padding:12px}.team-copy h3{font-size:18px}.team-copy p{font-size:12px}}
+    @media(max-width:760px){.masthead .wrap{min-height:auto;gap:8px;padding:8px 0}.masthead.shrunk .wrap{flex-direction:column;align-items:center;gap:7px;min-height:auto;padding:6px 0}.masthead .brand{font-size:24px}.masthead.shrunk .brand{font-size:20px}.hdr-group,.masthead.shrunk .hdr-group{align-items:center;justify-content:center;min-width:0;width:100%}.tagline{font-size:11px}.nav-row,.masthead.shrunk .nav-row{display:grid;grid-template-columns:auto minmax(0,1fr);row-gap:8px;column-gap:8px;width:100%}.mobile-nav-toggle{grid-column:1;display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:0 12px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);color:var(--fg);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer}.mobile-nav-toggle::after{content:"";width:6px;height:6px;border-right:1.8px solid currentColor;border-bottom:1.8px solid currentColor;transform:rotate(45deg) translateY(-2px);transition:transform .18s ease}.nav-row.is-open .mobile-nav-toggle::after{transform:rotate(225deg) translate(-1px,-1px)}.navlinks,.masthead.shrunk .navlinks{grid-column:1 / -1;display:none;grid-template-columns:repeat(2,minmax(0,1fr));justify-self:stretch;width:100%;gap:5px;font-size:10px;line-height:1.1;white-space:normal;overflow:visible;text-align:center}.nav-row.is-open .navlinks,.masthead.shrunk .nav-row.is-open .navlinks{display:grid}.navlinks a,.masthead.shrunk .navlinks a{display:flex;align-items:center;justify-content:center;min-height:28px;padding:4px 6px;border:1px solid var(--border);border-radius:var(--radius);background:var(--surface);text-wrap:balance}.navsep{display:none}.nav-actions,.masthead.shrunk .nav-actions{grid-column:2;justify-content:flex-end;justify-self:stretch;width:100%;gap:8px}.search-box,.masthead.shrunk .search-box{width:min(190px,calc(100vw - 118px));height:34px}.signin-btn,.masthead.shrunk .signin-btn{width:34px;height:34px}}
+    @media(max-width:500px){.wrap{width:min(100% - 24px,1180px)}.topbar .wrap{flex-direction:column;align-items:flex-start;gap:8px;padding:10px 0}.search{width:100%}.signin-modal{align-items:flex-start;justify-content:center;padding:104px 12px 12px}.featured-body h1{font-size:24px}.myth-row{grid-template-columns:112px 1fr}.ft-nl form{flex-direction:column}.masthead .brand{font-size:22px}.masthead.shrunk .brand{font-size:19px}.mobile-nav-toggle{padding:0 10px;font-size:10px}.search-box,.masthead.shrunk .search-box{width:min(168px,calc(100vw - 110px))}.navlinks,.masthead.shrunk .navlinks{font-size:10px}}
+  </style>
+</head>
+<body>
+  <!-- ===== HEADER - centered masthead, shrinks on scroll ===== -->
+  <header class="masthead" id="masthead">
+    <div class="wrap">
+      <div class="hdr-group">
+        <a class="brand" href="the-wellness-post-sugar-news-package.html">The Wellness Post</a>
+        <span class="tagline">Know Better. Live Well.</span>
+      </div>
+      <div class="nav-row">
+        <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-controls="primaryNav" aria-expanded="false">Menu</button>
+        <nav class="navlinks" id="primaryNav" aria-label="Primary navigation">
+          <a href="the-wellness-post-sugar-news-package.html" class="active">Home</a><span class="navsep">|</span>
+          <a href="reports.html">Reports</a><span class="navsep">|</span>
+          <a href="nutrition.html">Nutrition</a><span class="navsep">|</span>
+          <a href="mental-health.html">Mental Health</a><span class="navsep">|</span>
+          <a href="fitness.html">Fitness</a><span class="navsep">|</span>
+          <a href="sleep.html">Sleep</a><span class="navsep">|</span>
+          <a href="public-health.html">Public Health</a><span class="navsep">|</span>
+          <a href="topics.html">All Topics</a>
+        </nav>
+        <div class="nav-actions">
+          <div class="search-box"><span class="search-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7.5"/><line x1="16" y1="16" x2="22" y2="22"/></svg></span><input type="search" placeholder="Search" /></div>
+          <button class="signin-btn" id="signinOpen" type="button" aria-label="Sign in" aria-haspopup="dialog" aria-controls="signinModal" aria-expanded="false">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M20 21a8 8 0 0 0-16 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              <circle cx="12" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="signin-modal" id="signinModal" role="dialog" aria-modal="true" aria-labelledby="signinTitle" aria-hidden="true">
+    <div class="signin-panel">
+      <div class="signin-head">
+        <div>
+          <h2 id="signinTitle">Sign in</h2>
+          <p>Save articles, follow health topics, and receive reader updates from The Wellness Post.</p>
+        </div>
+        <button class="signin-close" id="signinClose" type="button" aria-label="Close sign in form">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+      <form class="signin-form" id="signinForm">
+        <div class="signin-field">
+          <label for="signinEmail">Email</label>
+          <input id="signinEmail" name="email" type="email" autocomplete="email" placeholder="you@example.com" required />
+        </div>
+        <div class="signin-field">
+          <label for="signinPhone">Phone</label>
+          <input id="signinPhone" name="phone" type="tel" autocomplete="tel" placeholder="+60 12 345 6789" />
+        </div>
+        <div class="signin-field">
+          <label for="signinPassword">Password</label>
+          <input id="signinPassword" name="password" type="password" autocomplete="current-password" placeholder="Enter password" required />
+        </div>
+        <button class="btn" type="submit" style="width:100%">Continue</button>
+        <p class="signin-note">Mock sign-in for the journalism project. No personal data is collected.</p>
+        <div class="signin-status" id="signinStatus" aria-live="polite"></div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== HEALTH TIPS TICKER ===== -->
+  <div class="ticker" aria-label="Health tips">
+    <div class="ticker-wrap">
+      <div class="ticker-label">Health Tips</div>
+      <div class="ticker-track">
+        <div class="ticker-text">
+          <span>Aim for 30 different plant foods per week for a healthier gut microbiome.</span>
+          <span>Adults need 7-9 hours of sleep per night - consistency matters more than duration.</span>
+          <span>Limit added sugar to less than 25g (6 teaspoons) per day for optimal health.</span>
+          <span>Walking 20 minutes a day can reduce cardiovascular disease risk by 30%.</span>
+          <span>Drink a glass of water before meals - it helps with hydration and portion awareness.</span>
+          <span>Strength training twice a week lowers heart attack risk by up to 44% in women.</span>
+          <span>Take most supplements with plain water - milk can block absorption of iron and zinc.</span>
+          <span>Your liver processes everything you eat. Reducing added sugar protects it long-term.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOP BANNER AD - 6-image carousel ===== -->
+  <div class="ad-bar" role="complementary" aria-label="Advertisement">
+    <div class="wrap">
+      <div style="display:flex;align-items:center;justify-content:center;padding:12px 0;width:100%;position:relative;">
+        <div class="banner-ad-frame">
+          <img id="topAdImg" class="banner-ad-img" src="mqxzjw3l-1ffcb898517177bf1fe083e1f24974d1.png" alt="Advertisement" />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main>
+    <div class="wrap">
+      <div class="content-grid">
+        <!-- ===== LEFT COLUMN ===== -->
+        <div>
+          <!-- FEATURED ARTICLE -->
+          <a class="featured" href="article.html">
+            <div class="featured-img"><img alt="Think Before You Drink sugar awareness campaign" src="assets/coverp.jpg" /></div>
+            <div class="featured-body">
+              <span class="label">Nutrition · Original Reporting</span>
+              <h1>Students Use Games to Expose Hidden Sugar in Everyday Drinks</h1>
+              <p>At XMUM's "Think Before You Drink" campaign, student organisers turned sugar labels into interactive games - helping young Malaysians see what's really in their cup. The average Malaysian teen consumes 11.5 teaspoons of added sugar daily, nearly half from beverages alone.</p>
+              <div class="reviewed"><span class="reviewed-dot"></span><span>Reported and fact-checked by <strong>The Wellness Post newsroom</strong></span></div>
+              <div class="byline">By <strong>Hui Meizhe, Tian Yuting, Wang Fanghan and Zhang Bihui</strong> · Published on <strong>June 12, 2026</strong></div>
+            </div>
+          </a>
+
+          <!-- TODAY'S TOP PICKS - 3-col card grid -->
+          <div class="sec-head"><h2>Today's Top Picks</h2></div>
+          <div class="card-row">
+            <a class="card" href="mnt-strength-training.html">
+              <div class="card-img"><img alt="Woman strength training for heart health" src="mqy1zit5-e69c96b6178112a8e9a2db887afb964a.png" /></div>
+              <div class="card-body"><span class="label">Cardiovascular</span><h3>2 Hours of Strength Training a Week May Lower Women's Heart Attack Risk by 44%</h3><p>A JACC study of 117,000+ women found combining weights with cardio produced the strongest protection.</p><span class="card-meta" style="color:var(--red);">Medical News Today · 5 min read</span></div>
+            </a>
+            <a class="card" href="mnt-calcium-vitamin-d.html">
+              <div class="card-img"><img alt="Calcium and vitamin D supplements for bone health" src="mqy21aoc-903b0a4c25501bd5fe56c1c8043c6899.png" /></div>
+              <div class="card-body"><span class="label">Bone Health</span><h3>Calcium and Vitamin D Supplements Provide 'Little to No Benefit' for Aging Bones</h3><p>Major BMJ review of 69 trials and 154,000 people finds supplements don't meaningfully reduce fractures.</p><span class="card-meta" style="color:var(--red);">Medical News Today · 4 min read</span></div>
+            </a>
+            <a class="card" href="mnt-tap-water-pills.html">
+              <div class="card-img"><img alt="Tap water better than mineral water for medication" src="mqy21ec6-63d0245d8d3f442174172176bccd08b2.png" /></div>
+              <div class="card-body"><span class="label">Medication Safety</span><h3>Tap Water May Be Better Than Mineral Water When Taking Pills</h3><p>Alkaline mineral water can break down drug coatings in 5 minutes - releasing medication too early.</p><span class="card-meta" style="color:var(--red);">Medical News Today · 4 min read</span></div>
+            </a>
+          </div>
+
+          <!-- SUPPLEMENT RECOMMENDER - rotating product cards -->
+          <section class="supplement-reel" aria-labelledby="supplement-reel-title">
+            <div class="reel-head">
+              <div>
+                <span class="reel-kicker">Practical picks</span>
+                <h2 id="supplement-reel-title">Supplement recommendations</h2>
+              </div>
+              <span class="reel-count"><span id="supplementIndex">01</span> / 04</span>
+            </div>
+            <div class="supplement-stage">
+              <div class="supplement-media">
+                <img id="supplementImage" src="mqyx5jsc-a1c2c5b8ddb4143193f3ff597be938ff.png" alt="Blackmores Omega-3 Triple Strength Fish Oil 1500 mg" />
+              </div>
+              <div class="supplement-copy">
+                <h3 id="supplementTitle">Blackmores Omega-3 Triple Strength Fish Oil 1500 mg</h3>
+                <p id="supplementDesc">Contains 3 times EPA+DHA compared to Blackmores Omega-3 Fish Oil 1000 mg. It is suitable for readers looking to increase Omega-3 fatty acid levels while taking fewer capsules.</p>
+                <div class="supplement-controls" aria-label="Supplement carousel controls">
+                  <button type="button" id="supplementPrev" aria-label="Previous supplement">&lsaquo;</button>
+                  <button type="button" id="supplementNext" aria-label="Next supplement">&rsaquo;</button>
+                  <div class="supplement-dots" aria-hidden="true">
+                    <span class="supplement-dot is-active"></span>
+                    <span class="supplement-dot"></span>
+                    <span class="supplement-dot"></span>
+                    <span class="supplement-dot"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- NUTRITION & WELLNESS - curated from Verywell Health, feature-row format -->
+          <div class="sec-head"><h2>Nutrition & Wellness</h2></div>
+          <div class="feature-list">
+            <a class="feature-row" href="vwh-overeat.html">
+              <div class="image"><img alt="Healthy foods that are easy to overeat" src="mqy1pxhm-image.png" /></div>
+              <div><span class="ft-label">Diet and Nutrition</span><h3>Healthy Foods That Are Easy to Overeat, According to a Dietitian</h3><p>Trail mix, avocado, nut butters, smoothies - these "health halo" foods pack surprising calories.</p><div class="ft-meta"><span class="ft-by">Verywell Health</span><span class="ft-source">· June 2026</span></div></div>
+            </a>
+            <a class="feature-row" href="vwh-supplements-milk.html">
+              <div class="image"><img alt="Supplements not to mix with milk" src="mqy1qjgz-image.png" /></div>
+              <div><span class="ft-label">Supplements</span><h3>Supplements You Should Never Take With Milk</h3><p>Iron, zinc, and magnesium absorption can be blocked by calcium. Here's how to time them right.</p><div class="ft-meta"><span class="ft-by">Verywell Health</span><span class="ft-source">· June 2026</span></div></div>
+            </a>
+            <a class="feature-row" href="vwh-potassium.html">
+              <div class="image"><img alt="Foods with more potassium than a banana" src="mqy1r3rz-image.png" /></div>
+              <div><span class="ft-label">Diet and Nutrition</span><h3>9 Foods With More Potassium Than a Banana - Ranked Highest to Lowest</h3><p>Avocado (975mg), Swiss chard (961mg), and baked potato (952mg) all beat the banana's 422mg.</p><div class="ft-meta"><span class="ft-by">Verywell Health</span><span class="ft-source">· June 2026</span></div></div>
+            </a>
+            <a class="feature-row" href="vwh-banana-tea.html">
+              <div class="image"><img alt="Banana peel tea for sleep" src="mqy1rbwt-image.png" /></div>
+              <div><span class="ft-label">Diet and Nutrition</span><h3>Banana Peel Tea: A Natural Sleep Remedy Worth Trying Tonight</h3><p>Rich in tryptophan, magnesium, and potassium - the peel contains more magnesium than the fruit.</p><div class="ft-meta"><span class="ft-by">Verywell Health</span><span class="ft-source">· June 2026</span></div></div>
+            </a>
+            <a class="feature-row" href="vwh-liver.html">
+              <div class="image"><img alt="Foods to avoid for a healthier liver" src="mqy1rni0-image.png" /></div>
+              <div><span class="ft-label">Diet and Nutrition</span><h3>Foods to Avoid for a Healthier Liver - and What to Eat Instead</h3><p>Added sugars, fried foods, and excess salt can contribute to fatty liver disease over time.</p><div class="ft-meta"><span class="ft-by">Verywell Health</span><span class="ft-source">· June 2026</span></div></div>
+            </a>
+            <a class="feature-row" href="vwh-gut-health.html">
+              <div class="image"><img alt="Probiotics vs fiber for gut health" src="mqy1rw9t-image.png" /></div>
+              <div><span class="ft-label">Diet and Nutrition</span><h3>Probiotics vs. Fiber: Which Is Actually Better for Your Gut?</h3><p>Fiber is the foundation - it feeds your gut bacteria. Probiotics offer targeted support when needed.</p><div class="ft-meta"><span class="ft-by">Verywell Health</span><span class="ft-source">· June 2026</span></div></div>
+            </a>
+          </div>
+
+        </div>
+
+        <!-- ===== RIGHT SIDEBAR ===== -->
+        <aside class="sidebar">
+          <div class="widget weather-widget">
+            <h3>Sepang · <span id="todayDate"></span></h3>
+            <div style="display:grid;gap:6px;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="font-size:28px;">&#9925;</span>
+                <div>
+                  <div style="font-size:30px;font-weight:700;line-height:1;">32&#176;C</div>
+                  <div style="font-size:13px;color:var(--muted);">Partly Cloudy</div>
+                  <div style="font-size:13px;color:var(--muted);">Humidity 78%</div>
+                </div>
+              </div>
+              <div style="border-top:1px solid var(--border);padding-top:10px;margin-top:4px;display:grid;gap:7px;">
+                <div style="font-size:12px;"><span style="font-weight:700;color:var(--accent);">UV Index:</span> <span style="color:var(--red);font-weight:700;">10</span> Very High</div>
+                <div style="font-size:12px;"><span style="font-weight:700;color:var(--accent);">Sun protection:</span> Reapply SPF 50+ sunscreen every 2 hours</div>
+                <div style="font-size:12px;"><span style="font-weight:700;color:var(--accent);">Hydration:</span> Drink at least 2.5L of water today</div>
+                <div style="font-size:12px;"><span style="font-weight:700;color:var(--accent);">Activity:</span> Limit outdoor exercise between 11am and 3pm</div>
+                <div style="font-size:12px;"><span style="font-weight:700;color:var(--accent);">Clothing:</span> Wear light, breathable fabrics and a hat</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="hospital-widget" aria-labelledby="nearby-resources">
+            <span class="label">Local help</span>
+            <h3 id="nearby-resources">Nearby health resources</h3>
+            <p class="hospital-intro">Useful starting points around Sepang for hospitals, clinics, pharmacies, urgent contacts and directions.</p>
+            <div class="hospital-list">
+              <article class="hospital-card">
+                <span class="resource-type">Nearby hospital</span>
+                <h4>Hospital Cyberjaya</h4>
+                <div class="hospital-meta">
+                  <span><strong>Best for:</strong> nearest major public hospital for Cyberjaya, Dengkil and Sepang routes.</span>
+                  <span><strong>Route:</strong> Head north via Persiaran Multimedia / ELITE-side roads toward Cyberjaya.</span>
+                  <span><strong>Phone:</strong> 03-8873 3500</span>
+                </div>
+                <div class="hospital-actions">
+                  <a class="primary" href="https://www.google.com/maps/dir/Sepang,+Selangor/Hospital+Cyberjaya" target="_blank" rel="noopener">Get route</a>
+                  <a href="https://jknselangor.moh.gov.my/hcj/" target="_blank" rel="noopener">Hospital info</a>
+                </div>
+              </article>
+              <article class="hospital-card">
+                <span class="resource-type">Nearby hospital</span>
+                <h4>Hospital Sultan Idris Shah, Serdang</h4>
+                <div class="hospital-meta">
+                  <span><strong>Best for:</strong> specialist and referral care near Serdang, Putrajaya and Kajang.</span>
+                  <span><strong>Route:</strong> Take ELITE / MEX direction toward Serdang and Universiti Putra Malaysia.</span>
+                  <span><strong>Phone:</strong> 03-8947 5555</span>
+                </div>
+                <div class="hospital-actions">
+                  <a class="primary" href="https://www.google.com/maps/dir/Sepang,+Selangor/Hospital+Sultan+Idris+Shah+Serdang" target="_blank" rel="noopener">Get route</a>
+                  <a href="https://jknselangor.moh.gov.my/hsis/index.php/ms/" target="_blank" rel="noopener">Hospital info</a>
+                </div>
+              </article>
+              <article class="hospital-card">
+                <span class="resource-type">Nearby hospital</span>
+                <h4>Hospital Putrajaya</h4>
+                <div class="hospital-meta">
+                  <span><strong>Best for:</strong> public hospital access for Putrajaya, Dengkil and nearby government precincts.</span>
+                  <span><strong>Route:</strong> Drive toward Putrajaya via Dengkil / Persiaran Utara, then follow hospital signs.</span>
+                  <span><strong>Phone:</strong> 03-8312 4200</span>
+                </div>
+                <div class="hospital-actions">
+                  <a class="primary" href="https://www.google.com/maps/dir/Sepang,+Selangor/Hospital+Putrajaya" target="_blank" rel="noopener">Get route</a>
+                  <a href="https://jknkl.moh.gov.my/hpj/en/contactus/map-location" target="_blank" rel="noopener">Hospital info</a>
+                </div>
+              </article>
+              <article class="hospital-card">
+                <span class="resource-type">Nearby clinic</span>
+                <h4>Klinik Kesihatan Sepang</h4>
+                <div class="hospital-meta">
+                  <span><strong>Best for:</strong> non-emergency check-ups, outpatient care, follow-up visits and public health services.</span>
+                  <span><strong>Route:</strong> Search from your current location and confirm opening hours before going.</span>
+                </div>
+                <div class="hospital-actions">
+                  <a class="primary" href="https://www.google.com/maps/search/Klinik+Kesihatan+Sepang" target="_blank" rel="noopener">Google Maps</a>
+                </div>
+              </article>
+              <article class="hospital-card">
+                <span class="resource-type">Pharmacy</span>
+                <h4>Pharmacies around Sepang</h4>
+                <div class="hospital-meta">
+                  <span><strong>Best for:</strong> basic medicines, pharmacist advice, masks, glucose checks and non-urgent health supplies.</span>
+                  <span><strong>Tip:</strong> Check the map listing for the nearest open pharmacy before travelling.</span>
+                </div>
+                <div class="hospital-actions">
+                  <a class="primary" href="https://www.google.com/maps/search/pharmacy+near+Sepang,+Selangor" target="_blank" rel="noopener">Google Maps</a>
+                </div>
+              </article>
+              <article class="hospital-card">
+                <span class="resource-type">Emergency contacts</span>
+                <h4>Urgent help in Malaysia</h4>
+                <div class="hospital-meta">
+                  <span><strong>Emergency line:</strong> 999 for ambulance, police or fire assistance.</span>
+                  <span><strong>Health advice:</strong> call a nearby hospital or clinic first if symptoms are urgent but not immediately life-threatening.</span>
+                </div>
+                <div class="hospital-actions">
+                  <a class="primary" href="tel:999">Call 999</a>
+                  <a href="https://www.google.com/maps/search/hospital+near+Sepang,+Selangor" target="_blank" rel="noopener">Google Maps</a>
+                </div>
+              </article>
+            </div>
+            <p class="hospital-note">For emergencies in Malaysia, call 999. For clinics and pharmacies, confirm opening hours in Google Maps before travelling.</p>
+          </div>
+
+          <div class="sidebar-ad-slot">
+            <img id="sidebarAdImg" src="mqxzv9xa-865fad66904ff43b08bae33f1edb3945.png" alt="Advertisement" style="width:72%;height:auto;border-radius:var(--radius);display:block;margin:0 auto;" />
+          </div>
+
+        </aside>
+      </div>
+
+      <section class="featured-stories-layout" aria-label="Featured stories and health topics">
+        <section class="featured-stories-section" aria-labelledby="featured-stories">
+          <div class="sec-head" id="featured-stories"><h2>Featured stories</h2></div>
+          <div class="card-row featured-stories">
+            <a class="card" href="featured-ebola-outbreak.html">
+              <div class="card-img"><img alt="Ebola treatment centre disinfection scene" src="mqy7x1o8-e908f033-1f12-41d1-9f2a-83da87d8446b.png" /></div>
+              <div class="card-body"><span class="label">Public Health</span><h3>Ebola outbreak: Top 3 questions about spread, outlook, answered</h3><p>Medical News Today speaks with infectious disease specialist Monica Gandhi about the DRC outbreak, why cases are rising, vaccine gaps, and why global spread is considered unlikely.</p><span class="card-meta" style="color:var(--red);">Medical News Today · June 17, 2026</span></div>
+            </a>
+            <a class="card" href="featured-adhd-women.html">
+              <div class="card-img"><img alt="Illustration about women, ADHD and masking" src="mqy7xltz-8d711931-e6c1-4f69-a257-06470e5d88a1.png" /></div>
+              <div class="card-body"><span class="label">Mental Health</span><h3>ADHD: Why do women get missed out?</h3><p>This In Conversation feature looks at why ADHD diagnosis can take longer for women, how masking can affect mental health, and what better support can look like.</p><span class="card-meta" style="color:var(--red);">Medical News Today · April 22, 2026</span></div>
+            </a>
+            <a class="card" href="featured-ai-vaccine.html">
+              <div class="card-img"><img alt="Vaccine vials held by a nurse" src="mqy7y5uw-f327aa12-c7be-4f81-adfc-5b9a89a39a94.png" /></div>
+              <div class="card-body"><span class="label">Medical Innovation</span><h3>World's first no-needle, AI-designed vaccine, explained by 2 experts</h3><p>A universal COVID vaccine candidate uses AI-guided design and needle-free delivery, with experts weighing its trial results and future potential.</p><span class="card-meta" style="color:var(--red);">Medical News Today · June 16, 2026</span></div>
+            </a>
+            <a class="card" href="featured-statins-weight-gain.html">
+              <div class="card-img"><img alt="Medication and heart health concept for statins" src="mqy7zi0r-image.png" /></div>
+              <div class="card-body"><span class="label">Heart Health</span><h3>Do statins cause weight gain?</h3><p>The explainer says weight gain is not a reported statin side effect, while noting diet habits, appetite signals, and metabolic research that may shape weight changes.</p><span class="card-meta" style="color:var(--red);">Medical News Today · Updated June 15, 2026</span></div>
+            </a>
+          </div>
+        </section>
+
+        <div class="health-topics-column">
+          <section class="health-topics-panel" aria-labelledby="featured-health-topics">
+            <div class="health-topics-head">
+              <h3 id="featured-health-topics">Featured Health Topics</h3>
+              <a href="topics.html" aria-label="View all health topics">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h13" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                  <path d="m13 6 6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </a>
+            </div>
+            <div class="health-topics-list">
+              <a href="topic-sleep-apnea.html">Sleep Apnea from Diagnosis to Treatment</a>
+              <a href="topic-weight-management.html">Getting Real About Weight Management</a>
+              <a href="topic-cold-flu-defense.html">Cold and Flu Defense at Home</a>
+              <a href="topic-thriving-with-hiv.html">A Guide to Thriving with HIV</a>
+              <a href="topic-sensitive-skin.html">Everyday Habits for Sensitive Skin</a>
+            </div>
+          </section>
+
+          <section class="reader-poll" id="readerPoll" aria-labelledby="reader-poll-title">
+            <span class="label">Reader vote</span>
+            <h3 id="reader-poll-title">What should we prepare next?</h3>
+            <p class="poll-intro">Tell us which topic matters most to you. Results appear after you vote.</p>
+            <div class="poll-options" role="group" aria-label="Reader topic poll">
+              <button class="poll-option" type="button" data-result="12" style="--result:12%;" aria-pressed="false">
+                <span class="poll-line"><span>Campus stress and sleep</span><span class="poll-percent">12%</span></span>
+                <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+              </button>
+              <button class="poll-option" type="button" data-result="27" style="--result:27%;" aria-pressed="false">
+                <span class="poll-line"><span>Affordable healthy meals</span><span class="poll-percent">27%</span></span>
+                <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+              </button>
+              <button class="poll-option" type="button" data-result="38" style="--result:38%;" aria-pressed="false">
+                <span class="poll-line"><span>Mental health support</span><span class="poll-percent">38%</span></span>
+                <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+              </button>
+              <button class="poll-option" type="button" data-result="23" style="--result:23%;" aria-pressed="false">
+                <span class="poll-line"><span>Hidden sugar in drinks</span><span class="poll-percent">23%</span></span>
+                <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+              </button>
+            </div>
+            <div class="poll-other">
+              <label for="pollOtherTopic">Other topic you want to read</label>
+              <form class="poll-other-row" id="pollOtherForm" novalidate>
+                <input id="pollOtherTopic" type="text" placeholder="Suggest another health topic" autocomplete="off" />
+                <button type="button" id="pollOtherSubmit">Submit</button>
+                <span class="poll-submit-status" id="pollSubmitStatus" aria-live="polite"></span>
+              </form>
+            </div>
+            <div class="poll-status" id="pollStatus" aria-live="polite"></div>
+          </section>
+
+        </div>
+      </section>
+
+      <!-- MIDDLE BANNER AD - same 6-image carousel -->
+      <div style="margin-bottom:36px;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);">
+        <div style="display:flex;align-items:center;justify-content:center;padding:16px 0;width:100%;max-width:1180px;margin:0 auto;">
+          <div class="banner-ad-frame">
+            <img id="midAdImg" class="banner-ad-img" src="mqxzjw3l-1ffcb898517177bf1fe083e1f24974d1.png" alt="Advertisement" />
+          </div>
+        </div>
+      </div>
+
+      <!-- MEDICAL MYTHS FEATURE - curated from Medical News Today -->
+      <section class="medical-myths" aria-labelledby="medical-myths-title">
+        <div class="sec-head"><h2 id="medical-myths-title">Medical Myths</h2></div>
+        <div class="myths-layout">
+          <div class="myths-lead-grid">
+            <a class="myth-lead" href="medical-myths-ibs.html">
+              <div class="myth-img"><img alt="Medical Myths illustration for IBS myths and facts" src="mqyah99u-a6732cc8-8a3c-4c71-b2ed-7172c291470b.png" /></div>
+              <div class="myth-body"><span class="label">Gut Health</span><h3>Medical Myths: IBS myths and facts</h3><p>Doctors unpack common claims about irritable bowel syndrome, from stress triggers to diagnosis and long-term management.</p><span class="card-meta" style="color:var(--red);">Medical News Today · Myth check</span></div>
+            </a>
+            <a class="myth-lead" href="medical-myths-endometriosis.html">
+              <div class="myth-img"><img alt="Medical Myths illustration for endometriosis facts vs fiction" src="mqyai1c3-527292e4-f6f0-45dc-99e6-b14fa1fc5165.png" /></div>
+              <div class="myth-body"><span class="label">Women's Health</span><h3>Medical Myths: Endometriosis facts vs. fiction</h3><p>Two experts address painful-period myths, fertility assumptions, and why delayed diagnosis still affects many patients.</p><span class="card-meta" style="color:var(--red);">Medical News Today · Myth check</span></div>
+            </a>
+          </div>
+          <div class="myth-stack">
+            <a class="myth-row" href="medical-myths-stroke.html">
+              <div class="myth-img"><img alt="Medical Myths illustration for stroke misconceptions" src="mqyaivmt-24a79414-3b32-40ec-9fa1-63d234b36680.png" /></div>
+              <div class="myth-body"><span class="label">Brain Health</span><h3>Medical Myths: All about stroke</h3><p>What people still get wrong about age, prevention, symptoms, and recovery after stroke.</p></div>
+            </a>
+            <a class="myth-row" href="medical-myths-copd.html">
+              <div class="myth-img"><img alt="Medical Myths illustration for COPD misconceptions" src="mqyajorg-d683fb03-3ed7-41d8-bf36-6009ef6b2568.png" /></div>
+              <div class="myth-body"><span class="label">Respiratory Health</span><h3>Medical Myths: All about COPD</h3><p>The feature challenges myths about smoking, exercise, oxygen therapy, and living well with COPD.</p></div>
+            </a>
+            <a class="myth-row" href="medical-myths-lung-cancer.html">
+              <div class="myth-img"><img alt="Medical Myths illustration for lung cancer misconceptions" src="mqyakdc7-fed9a778-e50c-4745-a246-ae33ff0d2912.png" /></div>
+              <div class="myth-body"><span class="label">Cancer</span><h3>Medical Myths: All about lung cancer</h3><p>Experts tackle beliefs about smoking, screening, surgery, treatment, and prognosis.</p></div>
+            </a>
+            <a class="myth-row" href="medical-myths-ibd.html">
+              <div class="myth-img"><img alt="Medical Myths illustration for inflammatory bowel disease misconceptions" src="mqyakzox-0f4af300-5eff-4098-ab45-811b08a07d68.png" /></div>
+              <div class="myth-body"><span class="label">Gut Health</span><h3>Medical Myths: All about IBD</h3><p>A quick guide to what IBD is, what it is not, and why treatment needs medical support.</p></div>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- MORE TOP PICKS - numbered list -->
+      <div class="sec-head"><h2>More Health News</h2></div>
+      <div class="num-list">
+        <a href="mnt-healthy-weight.html"><div><h3>How much should you weigh for your height and age?</h3><p>BMI is only one screening tool. Waist measures, body composition and daily habits can give a fuller picture.</p></div></a>
+        <a href="mnt-natural-blood-pressure.html"><div><h3>15 natural ways to lower blood pressure</h3><p>Walking, sodium reduction, potassium-rich foods and stress management can support healthier blood pressure over time.</p></div></a>
+        <a href="mnt-high-protein-foods.html"><div><h3>What foods are high in protein?</h3><p>A practical guide to animal, vegetarian and plant-based protein sources, from salmon and chicken to tofu and lentils.</p></div></a>
+        <a href="mnt-constipation-remedies.html"><div><h3>13 home remedies for constipation</h3><p>Hydration, fiber, movement and selected remedies may help, but persistent symptoms need medical advice.</p></div></a>
+        <a href="mnt-foods-lower-blood-pressure.html"><div><h3>18 best foods for high blood pressure</h3><p>Berries, beets, leafy greens, oats and oily fish can fit into a heart-friendly eating pattern.</p></div></a>
+        <a href="mnt-weight-loss-lifestyle.html"><div><h3>How to naturally lose weight with lifestyle changes</h3><p>Evidence-supported steps include tracking, mindful eating, enough protein, fiber, sleep and regular activity.</p></div></a>
+      </div>
+
+      <!-- READER COMMENTS -->
+      <section class="reader-comments" aria-labelledby="reader-comments-title">
+        <div class="reader-comments-head">
+          <div>
+            <span class="label">Reader comments</span>
+            <h3 id="reader-comments-title">What do you think of The Wellness Post?</h3>
+            <p class="comment-intro">Tell us what works, what feels useful, and what kind of reporting you want to see next. We read suggestions about the website experience and the health stories we publish.</p>
+          </div>
+          <span class="comment-count" id="commentCount">7 comments</span>
+        </div>
+        <div class="comment-list" id="commentList" aria-live="polite">
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Alya, Sepang</strong><span>Campus reader · <span class="comment-time">2 min ago</span></span></div>
+            <p>The hospital and local help cards make the site feel more practical. I would like more guides that explain where students can get health support nearby.</p>
+          </article>
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Daniel Tan</strong><span>Nutrition section · <span class="comment-time">6 min ago</span></span></div>
+            <p>The hidden sugar story is easy to follow. More short explainers on drink labels, calories and daily limits would help readers make decisions faster.</p>
+          </article>
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Nora</strong><span>Website feedback · <span class="comment-time">11 min ago</span></span></div>
+            <p>The layout feels like a real health news portal. I like the topic links, but I hope future articles include more Malaysian youth voices and campus examples.</p>
+          </article>
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Farah</strong><span>Local help · <span class="comment-time">18 min ago</span></span></div>
+            <p>The nearby health resources section is useful for readers in Sepang. It would be even better to add clinic opening hours or emergency hotline notes.</p>
+          </article>
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Jason Lee</strong><span>Video center · <span class="comment-time">24 min ago</span></span></div>
+            <p>I like that the video area is not only about the main sugar story. Short interviews with students would make the reporting feel more connected to campus life.</p>
+          </article>
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Mei Ling</strong><span>Website design · <span class="comment-time">37 min ago</span></span></div>
+            <p>The homepage has a strong news feel now. The side widgets are helpful, but I would keep checking the spacing so the right column does not feel crowded.</p>
+          </article>
+          <article class="comment-item">
+            <div class="comment-meta"><strong>Amir</strong><span>Public health · <span class="comment-time">51 min ago</span></span></div>
+            <p>Please cover more public health explainers for young people, especially haze, dengue prevention and what to do when campus events serve sugary drinks.</p>
+          </article>
+        </div>
+        <form class="comment-form" id="commentForm" novalidate onsubmit="return window.postReaderComment && window.postReaderComment(event)">
+          <div class="comment-form-row">
+            <div class="comment-field">
+              <label for="commentName">Name</label>
+              <input id="commentName" name="name" type="text" placeholder="Your name" />
+            </div>
+            <div class="comment-field">
+              <label for="commentTopic">Feedback focus</label>
+              <input id="commentTopic" name="topic" type="text" placeholder="Website design, sugar report, nutrition, local help..." />
+            </div>
+          </div>
+          <div class="comment-field">
+            <label for="commentMessage">Comment</label>
+            <textarea id="commentMessage" name="message" placeholder="Share your suggestion or what you think about our reporting..."></textarea>
+          </div>
+          <div class="comment-actions">
+            <span class="comment-status" id="commentStatus">Comments appear on this page after you post.</span>
+            <button class="btn" id="commentSubmit" type="submit" onclick="return window.postReaderComment && window.postReaderComment(event)">Post comment</button>
+          </div>
+        </form>
+      </section>
+
+      <script>
+        (function(){
+          var form=document.getElementById("commentForm");
+          var submit=document.getElementById("commentSubmit");
+          var list=document.getElementById("commentList");
+          var count=document.getElementById("commentCount");
+          var status=document.getElementById("commentStatus");
+          var storeKey="wellness-post-reader-comments";
+          function escapeText(value){return String(value||"").replace(/[&<>"']/g,function(ch){return({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"})[ch]})}
+          function updateCount(){if(!list||!count)return;var total=list.querySelectorAll(".comment-item").length;count.textContent=total+" "+(total===1?"comment":"comments")}
+          function addComment(item){if(!list)return;var article=document.createElement("article");article.className="comment-item";article.innerHTML='<div class="comment-meta"><strong>'+escapeText(item.name||"Anonymous reader")+'</strong><span>'+escapeText(item.topic||"Website feedback")+' · <span class="comment-time">'+escapeText(item.time||"1s ago")+'</span></span></div><p>'+escapeText(item.message)+'</p>';list.insertBefore(article,list.firstChild);list.scrollTop=0}
+          function saveComment(item){try{var saved=JSON.parse(localStorage.getItem(storeKey)||"[]");saved.unshift(item);localStorage.setItem(storeKey,JSON.stringify(saved.slice(0,12)))}catch(_){}}
+          function loadSaved(){try{var saved=JSON.parse(localStorage.getItem(storeKey)||"[]");saved.slice().reverse().forEach(addComment)}catch(_){}}
+          window.postReaderComment=function(e){
+            if(e){e.preventDefault();e.stopPropagation()}
+            var name=document.getElementById("commentName");
+            var topic=document.getElementById("commentTopic");
+            var message=document.getElementById("commentMessage");
+            var text=message&&message.value?message.value.trim():"";
+            if(!text){if(status)status.textContent="Please write a comment before posting.";if(message)message.focus();return false}
+            var item={name:(name&&name.value.trim())||"Anonymous reader",topic:(topic&&topic.value.trim())||"Website feedback",message:text,time:"1s ago"};
+            addComment(item);
+            saveComment(item);
+            updateCount();
+            if(form)form.reset();
+            if(status)status.textContent="Posted - your comment is now first in the list.";
+            return false;
+          };
+          if(form&&list){
+            loadSaved();
+            updateCount();
+            form.addEventListener("submit",window.postReaderComment);
+            if(submit)submit.addEventListener("click",window.postReaderComment);
+          }
+        })();
+      </script>
+
+      <!-- ===== TOPICS ROW ===== -->
+      <div class="topics-row" id="topics">
+        <a href="nutrition.html">Nutrition<span>Food & diet</span></a>
+        <a href="mental-health.html">Mental Health<span>Wellness & therapy</span></a>
+        <a href="fitness.html">Fitness<span>Exercise & recovery</span></a>
+        <a href="sleep.html">Sleep<span>Hygiene & routines</span></a>
+        <a href="public-health.html">Public Health<span>Policy & prevention</span></a>
+        <a href="article.html">Reported Stories<span>Original journalism</span></a>
+      </div>
+
+      <!-- ===== OUR TEAM ===== -->
+      <section class="team-showcase" id="our-team" aria-labelledby="team-title">
+        <div class="team-head">
+          <div>
+            <p class="team-kicker">Our Team</p>
+            <h2 id="team-title">Meet the newsroom behind The Wellness Post</h2>
+            <p>Our reporting package was built by a four-person student newsroom, combining field reporting, visual storytelling, writing, fact-checking and web production.</p>
+          </div>
+          <span class="team-badge">JRN209 Newsroom</span>
+        </div>
+        <div class="team-grid">
+          <article class="team-card">
+            <figure class="team-photo">
+              <img src="assets/team/hui-meizhe.jpg" alt="Portrait of Hui Meizhe" loading="lazy" />
+            </figure>
+            <div class="team-copy">
+              <h3>Hui Meizhe</h3>
+              <p class="team-role"><span>Photographer &amp;</span><span>Video Editor</span></p>
+              <p>Hui Meizhe is the visual backbone of our coverage, capturing field moments and shaping them into a coherent visual narrative. From framing the opening stand-up to selecting interview cuts, his work gave the live reporting video its professional edge.</p>
+            </div>
+          </article>
+          <article class="team-card">
+            <figure class="team-photo">
+              <img src="assets/team/tian-yuting.jpg" alt="Portrait of Tian Yuting" loading="lazy" />
+            </figure>
+            <div class="team-copy">
+              <h3>Tian Yuting</h3>
+              <p class="team-role"><span>On-air Reporter &amp;</span><span>Lead Web Developer</span></p>
+              <p>Tian Yuting guided audiences through the Think Before You Drink event on camera, conducted interviews and delivered key facts clearly. Behind the scenes, she built the website layout, navigation and user experience from the ground up.</p>
+            </div>
+          </article>
+          <article class="team-card">
+            <figure class="team-photo">
+              <img src="assets/team/zhang-bihui.jpg" alt="Portrait of Zhang Bihui" loading="lazy" />
+            </figure>
+            <div class="team-copy">
+              <h3>Zhang Bihui</h3>
+              <p class="team-role"><span>News Writer</span></p>
+              <p>Zhang Bihui led the news writing process, turning interviews and field observations into a structured, engaging story. She shaped the headline article with verified facts, attributed quotes and a clear inverted-pyramid structure.</p>
+            </div>
+          </article>
+          <article class="team-card">
+            <figure class="team-photo">
+              <img src="assets/team/wang-fanghan.jpg" alt="Portrait of Wang Fanghan" loading="lazy" />
+            </figure>
+            <div class="team-copy">
+              <h3>Wang Fanghan</h3>
+              <p class="team-role"><span>Research &amp;</span><span>Story Development</span></p>
+              <p>Wang Fanghan supported story development and writing through background research, source checking and language refinement. Her detail-focused work helped the final article stay accurate, readable and newsroom-ready.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="wrap">
+      <div class="footer-grid">
+        <div>
+          <h4>The Wellness Post</h4>
+          <div class="ft-nl">
+            <p>Daily health tips and original reporting delivered to your inbox. (Mock form.)</p>
+            <form id="ftNl"><input type="email" placeholder="Enter your email" /><button class="btn" type="submit" style="min-height:34px;font-size:12px">Sign Up</button></form>
+            <div class="social-links" aria-label="Follow The Wellness Post on social media">
+              <a href="https://web.whatsapp.com/" target="_self" onclick="window.location.href=this.href; return false;" aria-label="Open WhatsApp Web">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.04 3.5a8.4 8.4 0 0 0-7.22 12.72L3.9 20.5l4.37-1.02A8.4 8.4 0 1 0 12.04 3.5Zm0 1.72a6.68 6.68 0 1 1 0 13.36 6.7 6.7 0 0 1-3.42-.94l-.35-.2-2.18.51.46-2.13-.22-.35a6.68 6.68 0 0 1 5.71-10.25Zm-2.4 3.56c-.15 0-.39.06-.6.29-.2.23-.78.76-.78 1.86s.8 2.16.92 2.31c.11.15 1.56 2.49 3.86 3.39 1.91.75 2.3.6 2.71.56.42-.04 1.34-.55 1.53-1.08.19-.53.19-.98.13-1.08-.06-.09-.21-.15-.44-.27-.23-.11-1.34-.66-1.55-.74-.21-.08-.36-.11-.51.12-.15.23-.59.74-.72.89-.13.15-.27.17-.5.06-.23-.11-.96-.35-1.83-1.13-.68-.6-1.14-1.35-1.27-1.58-.13-.23-.01-.35.1-.47.1-.1.23-.27.34-.4.11-.13.15-.23.23-.38.08-.15.04-.29-.02-.4-.06-.12-.51-1.23-.7-1.69-.18-.44-.37-.38-.51-.39h-.39Z"/></svg>
+              </a>
+              <a href="https://www.instagram.com/" target="_self" onclick="window.location.href=this.href; return false;" aria-label="Open Instagram official website">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7.8 3.5h8.4a4.3 4.3 0 0 1 4.3 4.3v8.4a4.3 4.3 0 0 1-4.3 4.3H7.8a4.3 4.3 0 0 1-4.3-4.3V7.8a4.3 4.3 0 0 1 4.3-4.3Zm0 1.8a2.5 2.5 0 0 0-2.5 2.5v8.4a2.5 2.5 0 0 0 2.5 2.5h8.4a2.5 2.5 0 0 0 2.5-2.5V7.8a2.5 2.5 0 0 0-2.5-2.5H7.8Zm4.2 3.2a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7Zm0 1.8a1.7 1.7 0 1 0 0 3.4 1.7 1.7 0 0 0 0-3.4Zm4.1-2.7a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7Z"/></svg>
+              </a>
+              <a href="https://www.facebook.com/" target="_self" onclick="window.location.href=this.href; return false;" aria-label="Open Facebook official website">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M13.6 20.5v-7.3h2.45l.37-2.84H13.6V8.55c0-.82.23-1.38 1.41-1.38h1.5V4.63a20 20 0 0 0-2.19-.11c-2.17 0-3.65 1.32-3.65 3.75v2.09H8.22v2.84h2.45v7.3h2.93Z"/></svg>
+              </a>
+              <a href="https://x.com/" target="_self" onclick="window.location.href=this.href; return false;" aria-label="Open X official website">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M14.1 10.35 20.25 3.5h-2.12l-4.96 5.52L9.21 3.5H3.75l6.43 8.96-6.5 8.04H5.8l5.33-6.6 4.74 6.6h5.38l-7.15-10.15Zm-1.9 2.33-.62-.88-5.1-7.22h1.75l4.1 5.8.62.88 5.4 7.66h-1.74l-4.41-6.24Z"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div>
+          <h4>Health Topics</h4>
+          <div class="footer-links"><a href="nutrition.html">Nutrition</a><a href="mental-health.html">Mental Health</a><a href="fitness.html">Fitness</a><a href="sleep.html">Sleep</a><a href="public-health.html">Public Health</a></div>
+        </div>
+        <div>
+          <h4>About</h4>
+          <div class="footer-links"><a href="#reader-comments">Reader Feedback</a><a href="#our-team">Our Team</a><a href="#">Contact</a><a href="#">Privacy Policy</a><a href="#">Terms of Use</a><a href="#">Disclaimer</a></div>
+        </div>
+      </div>
+      <div class="footer-legal">
+        <span>&copy; 2026 The Wellness Post. JRN209 Online Journalism - Xiamen University Malaysia.</span>
+        <span>Health information is for educational purposes only. <a href="#">Full Disclaimer</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    var sb=document.querySelector(".search-box input");if(sb){sb.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();var target=document.getElementById("latest");if(target){var top=target.getBoundingClientRect().top+window.pageYOffset-80;window.scrollTo({top:top,behavior:"smooth"})}}})};
+    (function(){var row=document.querySelector(".nav-row");var toggle=document.getElementById("mobileNavToggle");var nav=document.getElementById("primaryNav");if(!row||!toggle||!nav)return;function setOpen(open){row.classList.toggle("is-open",open);toggle.setAttribute("aria-expanded",open?"true":"false")}toggle.addEventListener("click",function(){setOpen(!row.classList.contains("is-open"))});nav.querySelectorAll("a").forEach(function(link){link.addEventListener("click",function(){setOpen(false)})});window.addEventListener("resize",function(){if(window.innerWidth>760)setOpen(false)})})();
+    [document.getElementById("ftNl")].forEach(function(f){if(!f)return;f.addEventListener("submit",function(e){e.preventDefault();var b=f.querySelector("button");b.textContent="Done - Thanks!";b.disabled=true;setTimeout(function(){b.textContent="Sign Up";b.disabled=false},3000)})});
+    document.querySelectorAll('[href^="#ad-"]').forEach(function(el){el.addEventListener("click",function(e){e.preventDefault();var t=el.textContent;el.textContent="Ad selected";setTimeout(function(){el.textContent=t},2000)})});
+    // Supplement recommender carousel
+    (function(){var items=[{title:"Blackmores Omega-3 Triple Strength Fish Oil 1500 mg",desc:"Contains 3 times EPA+DHA compared to Blackmores Omega-3 Fish Oil 1000 mg. It is suitable for readers looking to increase Omega-3 fatty acid levels while taking fewer capsules.",img:"mqyx5jsc-a1c2c5b8ddb4143193f3ff597be938ff.png"},{title:"Blackmores Vitamin D3",desc:"Vitamin D3 supports bone health and helps with the absorption of calcium. It may help maintain healthy bones and has no added yeast, gluten, milk derivatives, preservatives, artificial flavours or sweeteners.",img:"mqyx6bq3-a9c6364f60afef21c7b7efd8b81ef853.png"},{title:"Blackmores Executive B",desc:"A specially formulated combination of B-group vitamins with magnesium and zinc to help meet the daily needs of busy people. It is designed for hectic lifestyles in a convenient one-a-day dose.",img:"mqyx6x8v-d270910fd543c040e812dd98568634bf.png"},{title:"Blackmores Complexion Renewal",desc:"A beauty nutrition formula with targeted antioxidants to support skin health. It includes glutathione to help protect cells from oxidative damage, plus vitamin C, zinc and green tea extract.",img:"mqyx7blw-a9b457992df38405cb83c541d2a2110c.png"}];var image=document.getElementById("supplementImage");var title=document.getElementById("supplementTitle");var desc=document.getElementById("supplementDesc");var index=document.getElementById("supplementIndex");var prev=document.getElementById("supplementPrev");var next=document.getElementById("supplementNext");var dots=Array.prototype.slice.call(document.querySelectorAll(".supplement-dot"));var active=0;function pad(n){return(n<10?"0":"")+n}function render(){var item=items[active];if(!item||!image||!title||!desc)return;image.classList.add("is-changing");setTimeout(function(){image.src=item.img;image.alt=item.title;title.textContent=item.title;desc.textContent=item.desc;if(index)index.textContent=pad(active+1);dots.forEach(function(dot,i){dot.classList.toggle("is-active",i===active)});image.classList.remove("is-changing")},120)}function go(step){active=(active+step+items.length)%items.length;render()}if(prev&&next&&image&&title&&desc){prev.addEventListener("click",function(){go(-1)});next.addEventListener("click",function(){go(1)})}})();
+    // Reader poll
+    (function(){var poll=document.getElementById("readerPoll");var status=document.getElementById("pollStatus");var form=document.getElementById("pollOtherForm");var input=document.getElementById("pollOtherTopic");var submit=document.getElementById("pollOtherSubmit");var submitStatus=document.getElementById("pollSubmitStatus");function submitTopic(e){if(e)e.preventDefault();if(!input)return;var value=input.value.trim();if(!value){if(submitStatus)submitStatus.textContent="Please enter a topic first.";input.focus();return false}if(submitStatus)submitStatus.innerHTML='<span class="check" aria-hidden="true">✓</span>Submitted';input.value="";return false}if(poll){var options=Array.prototype.slice.call(poll.querySelectorAll(".poll-option"));options.forEach(function(btn){btn.addEventListener("click",function(){options.forEach(function(item){item.classList.remove("is-selected");item.setAttribute("aria-pressed","false")});btn.classList.add("is-selected");btn.setAttribute("aria-pressed","true");poll.classList.add("has-voted");if(status)status.textContent="Thanks - here is how readers are voting so far."})})}if(form&&input){form.addEventListener("submit",submitTopic)}if(submit){submit.addEventListener("click",submitTopic)}})();
+    // Sign-in modal
+    (function(){var open=document.getElementById("signinOpen");var modal=document.getElementById("signinModal");var close=document.getElementById("signinClose");var form=document.getElementById("signinForm");var email=document.getElementById("signinEmail");var status=document.getElementById("signinStatus");if(!open||!modal||!close)return;function show(){modal.classList.add("is-open");modal.setAttribute("aria-hidden","false");open.setAttribute("aria-expanded","true");setTimeout(function(){if(email)email.focus()},30)}function hide(){modal.classList.remove("is-open");modal.setAttribute("aria-hidden","true");open.setAttribute("aria-expanded","false");open.focus()}open.addEventListener("click",show);close.addEventListener("click",hide);modal.addEventListener("click",function(e){if(e.target===modal)hide()});document.addEventListener("keydown",function(e){if(e.key==="Escape"&&modal.classList.contains("is-open"))hide()});if(form){form.addEventListener("submit",function(e){e.preventDefault();if(status)status.textContent="Signed in for preview.";var b=form.querySelector("button");if(b){b.textContent="Signed in";b.disabled=true;setTimeout(function(){b.textContent="Continue";b.disabled=false;if(status)status.textContent=""},3000)}})}})();
+    // Ad carousel - banner: 5 images, 8s interval
+    (function(){var bannerAds=["mqxzjw3l-1ffcb898517177bf1fe083e1f24974d1.png","mqxzogvb-7e468cfe35eb3a7a5594b7176e5e40f5.png","mqxzq3op-cb32cb48831c3e62f8e27c1a905c9026.png","mqxzqrkt-f8204368afc20427cd5e338d383a6ab5.png","mqxzs2ve-e42b88c20a706746d54e3a2c524fc7df.png"];var bannerImgs=Array.prototype.slice.call(document.querySelectorAll(".banner-ad-img"));var bi=0;if(bannerImgs.length){setInterval(function(){bi=(bi+1)%bannerAds.length;bannerImgs.forEach(function(img){img.src=bannerAds[bi]})},8000)};
+    // Sidebar ad carousel - 4 images, 10s interval
+    var sidebarAds=["mqxzv9xa-865fad66904ff43b08bae33f1edb3945.png","mqxzvk8r-b638eff6cbc5e3c746aac7ba55663b00.png","mqxzxib8-81e1ee2487f027ac536fdf8414eb31eb.png","mqxzza3w-39978e5483c17c52524080124f990317.png"];var sbImg=document.getElementById("sidebarAdImg");var si=0;if(sbImg){setInterval(function(){si=(si+1)%sidebarAds.length;sbImg.src=sidebarAds[si]},10000)};})();
+    // Today's date
+    var d=new Date();var m=["January","February","March","April","May","June","July","August","September","October","November","December"];var td=document.getElementById("todayDate");if(td)td.textContent=m[d.getMonth()]+" "+d.getDate()+", "+d.getFullYear();
+    // Scroll-shrink masthead
+    var masthead=document.getElementById("masthead");if(masthead){window.addEventListener("scroll",function(){masthead.classList.toggle("shrunk",window.scrollY>80)})};
+  </script>
+</body>
+</html>
+
+
+

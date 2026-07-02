@@ -1,0 +1,339 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Students use games to expose hidden sugar in everyday drinks | The Wellness Post</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --fg: #212529;
+      --accent: #0D7680;
+      --surface: #F8F9FA;
+      --muted: #6C757D;
+      --border: #DEE2E6;
+      --font-display: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --font-body: Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--font-body); line-height: 1.62; }
+    a { color: inherit; text-decoration: none; }
+    img, video, iframe { display: block; width: 100%; }
+    button, textarea, input { font: inherit; }
+    .wrap { width: min(1040px, calc(100% - 32px)); margin: 0 auto; }
+    .top { border-bottom: 1px solid var(--border); background: var(--accent); color: var(--bg); }
+    .top .wrap { min-height: 78px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+    .brand { font-size: 30px; line-height: 1; letter-spacing: -0.03em; font-weight: 850; }
+    .nav { display: flex; gap: 16px; font-size: 13px; font-weight: 750; flex-wrap: wrap; }
+    .ad-bar { border-bottom: 1px solid var(--border); background: var(--surface); min-height: 80px; display: grid; place-items: center; text-align: center; padding: 12px 16px; }
+    .ad-bar .ad-badge { background: var(--accent); color: var(--bg); font-size: 10px; font-weight: 850; letter-spacing: 0.12em; padding: 3px 10px; border-radius: 4px; text-transform: uppercase; display: inline-block; margin-bottom: 6px; }
+    .article { padding: clamp(34px, 6vw, 68px) 0; }
+    .article-grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 34px; align-items: start; }
+    .label { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+    h1 { margin: 10px 0 16px; max-width: 20ch; font-size:clamp(32px,4.2vw,48px); line-height: 0.98; letter-spacing: -0.035em; }
+    .standfirst { max-width: 68ch; font-size: 20px; line-height: 1.46; }
+    .meta, .source { color: var(--muted); font-size: 13px; font-weight: 700; }
+    .hero { margin: 26px 0 22px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+    .hero img { aspect-ratio: 16 / 8; object-fit: cover; }
+    .caption { padding: 10px 12px; color: var(--muted); font-size: 12px; font-weight: 650; }
+    .video-box { margin: 24px 0; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; background: var(--surface); }
+    .video-box iframe { aspect-ratio: 16 / 9; border: 0; background: var(--fg); }
+    .article-body { max-width: 72ch; }
+    .article-body p { margin: 0 0 20px; font-size: 17px; }
+    blockquote { margin: 28px 0; padding: 0 0 0 18px; border-left: 4px solid var(--accent); font-size: 22px; line-height: 1.35; font-weight: 720; letter-spacing: -0.015em; }
+    .facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin: 28px 0; }
+    .fact { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 14px; }
+    .fact strong { display: block; color: var(--accent); font-size: 26px; line-height: 1; letter-spacing: -0.02em; }
+    .fact span { display: block; margin-top: 8px; font-size: 13px; }
+    .rail { display: grid; gap: 16px; position: sticky; top: 18px; }
+    .card { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 16px; }
+    .card h3 { margin: 8px 0; line-height: 1.18; letter-spacing: -0.015em; }
+    .side-ad { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 18px; display: grid; gap: 10px; text-align: center; }
+    .side-ad .ad-badge { background: var(--accent); color: var(--bg); font-size: 10px; font-weight: 850; letter-spacing: 0.12em; padding: 3px 10px; border-radius: 4px; width: fit-content; margin: 0 auto; }
+    .interactive { margin-top: 46px; padding-top: 32px; border-top: 1px solid var(--border); display: grid; gap: 18px; }
+    .tool-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .tool { border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); padding: 16px; display: grid; gap: 12px; align-content:start; }
+    .poll-row { display: grid; gap: 8px; padding: 11px 12px; border: 1px solid var(--border); border-radius: var(--radius); font-size: 14px; width:100%; text-align:left; background:var(--bg); color:var(--fg); cursor:pointer; font-family:inherit; }
+    .poll-row:hover,.poll-row:focus-visible { border-color: var(--accent); outline:0; }
+    .poll-row:last-child { border-bottom: 1px solid var(--border); }
+    .poll-row.voted { background: var(--surface); }
+    .poll-row.selected { border-color: var(--accent); }
+    .poll-line { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+    .poll-pct { color: var(--accent); font-weight: 800; font-variant-numeric: tabular-nums; visibility:hidden; }
+    .poll-bar { height:6px; border-radius:999px; background:var(--border); overflow:hidden; }
+    .poll-fill { display:block; width:0; height:100%; background:var(--accent); transition:width .45s ease; }
+    .poll-row.voted .poll-pct { visibility:visible; }
+    .poll-row.voted .poll-fill { width:var(--pct); }
+    .comment-list { display:grid; gap:10px; max-height:300px; overflow-y:auto; padding-right:6px; overscroll-behavior:contain; }
+    .comment-list::-webkit-scrollbar{width:8px}
+    .comment-list::-webkit-scrollbar-track{background:var(--surface);border-radius:999px}
+    .comment-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:999px}
+    .comment-item { border:1px solid var(--border); border-radius:var(--radius); background:var(--bg); padding:13px 14px; display:grid; gap:7px; }
+    .comment-meta { display:flex; align-items:center; justify-content:space-between; gap:10px; font-size:12px; color:var(--muted); line-height:1.3; }
+    .comment-meta strong { color:var(--fg); font-size:13px; font-weight:800; }
+    .comment-time { white-space:nowrap; }
+    .comment-item p { margin:0; font-size:14px; line-height:1.5; color:var(--fg); }
+    .comment-form { display: grid; gap: 10px; }
+    textarea, input { border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--fg); padding: 12px; }
+    textarea { min-height: 118px; resize: vertical; }
+    .btn { border: 1px solid var(--accent); background: var(--accent); color: var(--bg); border-radius: 999px; min-height: 42px; padding: 0 18px; display: inline-flex; align-items: center; justify-content: center; width: fit-content; font-weight: 800; cursor: pointer; }
+    .footer { padding: 28px 0; border-top: 1px solid var(--border); background: var(--accent); color: var(--bg); }
+    @media (max-width: 860px) { .article-grid, .tool-grid, .facts { grid-template-columns: 1fr; } .rail { position: static; } h1 { font-size: 34px; } }
+      .back-button{position:fixed;top:14px;left:14px;z-index:1000;width:42px;height:42px;border:1px solid var(--border);border-radius:999px;background:var(--bg);color:var(--fg);display:grid;place-items:center;font:800 22px/1 var(--font-body, var(--font, Inter, system-ui, -apple-system, "Segoe UI", "Helvetica Neue", Arial, sans-serif));cursor:pointer}
+    .back-button:hover,.back-button:focus-visible{border-color:var(--accent);color:var(--accent);outline:0}
+    .back-button span[aria-hidden="true"]{line-height:1;margin-top:-2px}
+    @media(max-width:640px){.back-button{top:10px;left:10px;width:40px;height:40px}.top .wrap{padding-left:66px}}
+    .banner-ad-frame{width:min(800px,calc(100% - 32px));height:clamp(90px,12vw,130px);margin:0 auto;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:var(--surface)}
+    .banner-ad-frame img{width:100%;height:100%;display:block;object-fit:contain}</style>
+</head>
+<body>
+  <button class="back-button" type="button" data-back-button aria-label="&#36820;&#22238;&#19978;&#19968;&#39029;"><span aria-hidden="true">&lsaquo;</span></button>
+  <header class="top">
+    <div class="wrap">
+      <a class="brand" href="the-wellness-post-sugar-news-package.html">The Wellness Post</a>
+      <nav class="nav" aria-label="Article navigation">
+        <a href="the-wellness-post-sugar-news-package.html">Home</a>
+        <a href="#video">Video</a>
+        <a href="#interaction">Comments & Poll</a>
+      </nav>
+    </div>
+  </header>
+  <div class="ad-bar" role="complementary" aria-label="Advertisement"><div class="banner-ad-frame"><img class="banner-ad-img" src="mqxzjw3l-1ffcb898517177bf1fe083e1f24974d1.png" alt="Advertisement" /></div></div>
+  <main class="article">
+    <div class="wrap article-grid">
+      <article>
+        <div class="label">Lead report</div>
+        <h1>Students Use Games to Expose Hidden Sugar in Everyday Drinks</h1>
+        <p class="standfirst">At Xiamen University Malaysia, a student-led campaign called "Think Before You Drink" turned sugar labels into interactive games &mdash; helping young Malaysians see what is really in their cup, one teaspoon at a time.</p>
+        <p class="meta">By Hui Meizhe, Tian Yuting, Wang Fanghan and Zhang Bihui &middot; Sepang &middot; June 12, 2026</p>
+        <figure class="hero">
+          <img alt="Think Before You Drink sugar awareness campaign booth at XMUM" src="assets/coverp.jpg" />
+          <figcaption class="caption">The "Think Before You Drink" campaign used booth games and drink-building activities to make hidden sugar easier to understand. Photo: ASG3 original.</figcaption>
+        </figure>
+        <section class="video-box" id="video" aria-label="Embedded video report">
+          <iframe src="https://www.youtube.com/embed/WQ8EE3Ph7hs" title="Think Before You Drink video report" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          <div class="caption">Original ASG3 video: Think Before You Drink &mdash; full event coverage. Student organisers explain the games, the message, and why sugar awareness matters.</div>
+        </section>
+        <div class="article-body">
+          <p><strong>SEPANG:</strong> XMUM students held a community service event, <em>Think Before You Drink</em>, on June 12 to educate students on maintaining health through daily drink choices.</p>
+          <p>The programme was organised by first-year students at the A3 Ground Floor and involved games which shed light on the secret sugar in drinks enjoyed by most students.</p>
+          <p>According to the 2024 National Health and Morbidity Survey, the average Malaysian teenager consumes 11.5 teaspoons of sugar in a day, out of which almost half is from beverages.</p>
+          <p>A report by Discover Public Health published in 2026 revealed that 86 per cent of young adults were aware that excessive consumption of sugar is unhealthy, but only 17 per cent thought it was an issue for themselves.</p>
+          <blockquote>"As long as students become more aware of the sugar content in their drinks and start making more informed choices, we consider the event meaningful." <cite>&mdash; Joyce Ng, event organiser</cite></blockquote>
+          <p>Joyce Ng, one of the organisers, explained that they decided to organise the activity due to the lack of awareness among the students about what they are actually consuming.</p>
+          <p>She further said that the majority of students underestimate the sugar in common beverages, and even for those who regularly consume milk tea, the estimated figure was much less than the actual sugar content.</p>
+          <p>She said many participants stayed at the booth longer than expected, discussing the sugar content of different drinks and comparing their guesses with friends.</p>
+          <p>"The aim of our activities is obvious. We want to raise awareness among XMUM students about the sugar content in their daily drinks," she said, adding that they hoped that once students knew the truth, they would think twice before ordering.</p>
+          <p>The most popular activity, <em>Guess the Sugar</em>, asked participants to estimate the sugar content of their favourite drinks. For instance, a 16-ounce bubble tea drink has 38 grams of sugar, which is already close to the recommended upper limit of daily sugar intake for an adult.</p>
+          <p>However, while going through the activity, many students claimed that they do not consider sugar when ordering a drink.</p>
+          <p>Cai Zhuyi, a student interviewed at the booth, said the amount of sugar had never crossed her mind. "I never really thought about how much sugar was in it. I usually choose drinks based on what I feel like having that day," she said.</p>
+          <p>She added that she buys drinks about four times a week and often sees them as a quick refreshment after class.</p>
+          <p>"The second activity was <em>Sweet Karma</em>. It used a board game format where students rolled dice and answered questions about their daily eating and drinking habits," Ng said. Based on their scores, the students received one of four results: Healthy, Average, Needs Improvement, or Unhealthy. "Each result came with specific advice on how to improve their lifestyle," she added.</p>
+          <p>"The third activity was <em>Build Your Drink</em>. Students used a computer to customise a virtual drink by choosing a base, flavour, and topping. They then guessed the total sugar content of the drink they had just made," she said.</p>
+          <p>Zhang Ruixuan, who took part in the event, said the information caught her off guard. "The amount was far higher than I expected," she said. She also said <em>Build Your Drink</em> impressed her the most. "I originally thought it was a normal combination, but the final calculation of the sugar was much higher than expected."</p>
+          <p>Zhang added that she was particularly surprised to learn that some drinks that appear healthy, such as fruit tea, can still contain large amounts of sugar. She said that through the activities, she understood that making healthier decisions would not imply abstaining from her favourite beverages completely.</p>
+          <div class="facts" aria-label="Key facts">
+            <div class="fact"><strong>11.5 tsp</strong><span>Average daily sugar intake for Malaysian teenagers (NHMS 2024), nearly half from beverages.</span></div>
+            <div class="fact"><strong>38g</strong><span>Sugar in a 16-ounce bubble tea &mdash; already close to the adult daily limit of 25g recommended by health practitioners.</span></div>
+            <div class="fact"><strong>RM 521M</strong><span>Collected from Malaysia's sugar tax since the rate increased to 90 sen per litre in January 2025.</span></div>
+          </div>
+          <p>Dr Barakatun Nisak Mohd Yusof, a nutrition expert from Universiti Putra Malaysia, said that sugary drinks are one of the main reasons young people face risks of weight gain, diabetes, and heart disease.</p>
+          <p>While health practitioners recommend that no more than 25 grams of sugar be consumed per day by adults, one serving of carbonated drinks contains roughly 35 grams of sugar.</p>
+          <p>According to a study conducted nationally in 2017, more than one out of three Malaysian youths aged 13 to 17 had become habitual consumers of carbonated beverages daily.</p>
+          <p>Malaysia has been taxing sugar-containing drinks since 2019, but after increasing the taxation rates to 90 sen per litre of the beverage in January 2025, the government has collected over RM521 million. This measure expanded on the sugar tax introduced in 2019, which aimed to address the country's alarming rates of diabetes and obesity.</p>
+          <p>The government has allocated RM25 million from sugar tax collections to fund public health campaigns and diabetes-related medical support, according to the Ministry of Finance.</p>
+          <p>A 2024 report by the Ministry of Health noted that most youths who have cut back on their consumption of sugary beverages have done so based on health reasons and not because of prices.</p>
+          <p>However, Ng conceded that it would be impossible to reverse the trend overnight. "As long as students become more aware of the sugar content in their drinks and start making more informed choices, we consider the event meaningful," she said.</p>
+          <p>The event only lasted one day, but for the students who took part, it may change how they think the next time they order a drink.</p>
+          <p class="source">Student journalism project for JRN209 Online Journalism. Reported by Hui Meizhe, Tian Yuting, Wang Fanghan and Zhang Bihui. Based on interviews, event observation, and original video documentation at Xiamen University Malaysia. Health information is for reporting and education, not a substitute for medical advice. Sources: NHMS 2024, Discover Public Health (2026), Ministry of Health Malaysia, Ministry of Finance Malaysia.</p>
+        </div>
+
+        <section class="interactive" id="interaction" aria-labelledby="interactionTitle">
+          <div>
+            <div class="label">Reader interaction</div>
+            <h2 id="interactionTitle">Join the discussion</h2>
+            <p class="muted">Share your response after reading the full report and watching the embedded video.</p>
+          </div>
+          <div class="tool-grid">
+            <section class="tool" aria-labelledby="pollTitle">
+              <div>
+                <div class="label">Poll</div>
+                <h3 id="pollTitle">After reading this, what would you do before buying a sweet drink?</h3>
+              </div>
+              <div id="pollOptions">
+                <button class="poll-row" type="button" data-vote="0" data-pct="36" style="--pct:36%;" aria-pressed="false">
+                  <span class="poll-line"><span>Check the sugar grams on the label first</span><span class="poll-pct">36%</span></span>
+                  <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+                </button>
+                <button class="poll-row" type="button" data-vote="1" data-pct="25" style="--pct:25%;" aria-pressed="false">
+                  <span class="poll-line"><span>Order less sugar or smaller cup sizes</span><span class="poll-pct">25%</span></span>
+                  <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+                </button>
+                <button class="poll-row" type="button" data-vote="2" data-pct="19" style="--pct:19%;" aria-pressed="false">
+                  <span class="poll-line"><span>Switch to water, tea, or unsweetened drinks</span><span class="poll-pct">19%</span></span>
+                  <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+                </button>
+                <button class="poll-row" type="button" data-vote="3" data-pct="20" style="--pct:20%;" aria-pressed="false">
+                  <span class="poll-line"><span>Share this with friends who buy sweet drinks often</span><span class="poll-pct">20%</span></span>
+                  <span class="poll-bar" aria-hidden="true"><span class="poll-fill"></span></span>
+                </button>
+              </div>
+              <p class="source" id="pollStatus" style="margin-top:6px;">Vote to see how readers are responding.</p>
+            </section>
+            <section class="tool" aria-labelledby="commentTitle">
+              <div>
+                <div class="label">Comments</div>
+                <h3 id="commentTitle">What do you think about hidden sugar in drinks?</h3>
+              </div>
+              <div class="comment-list" id="articleCommentList" aria-live="polite">
+                <article class="comment-item">
+                  <div class="comment-meta"><strong>Alya, Foundation student</strong><span>Campus drinks &middot; <span class="comment-time">2 min ago</span></span></div>
+                  <p>The sugar game made the numbers easier to understand. I would like to see common milk tea orders compared side by side.</p>
+                </article>
+                <article class="comment-item">
+                  <div class="comment-meta"><strong>Marcus Lim</strong><span>Reader feedback &middot; <span class="comment-time">7 min ago</span></span></div>
+                  <p>I did not realise one cup could be close to a full day of sugar. The article should add a quick label-reading guide for students.</p>
+                </article>
+                <article class="comment-item">
+                  <div class="comment-meta"><strong>Nora</strong><span>Nutrition question &middot; <span class="comment-time">14 min ago</span></span></div>
+                  <p>The part about fruit tea surprised me because it sounds healthier. More reporting on "healthy-looking" drinks would be useful.</p>
+                </article>
+                <article class="comment-item">
+                  <div class="comment-meta"><strong>Haziq</strong><span>Video response &middot; <span class="comment-time">21 min ago</span></span></div>
+                  <p>The student interviews make the story feel real. I would watch a short follow-up where people guess sugar levels again after learning the facts.</p>
+                </article>
+              </div>
+              <form class="comment-form" id="articleCommentForm" novalidate onsubmit="return window.postArticleComment && window.postArticleComment(event)">
+                <input id="articleCommentName" type="text" aria-label="Display name" placeholder="Display name" />
+                <textarea id="articleCommentMessage" aria-label="Comment" placeholder="Share a short comment about the sugar report..."></textarea>
+                <button class="btn" id="articleCommentSubmit" type="submit" onclick="return window.postArticleComment && window.postArticleComment(event)">Post comment</button>
+              </form>
+              <p class="source" id="articleCommentStatus">Comments appear here after you post.</p>
+            </section>
+          </div>
+        </section>
+      </article>
+      <aside class="rail" aria-label="Article side rail">
+        <section class="card">
+          <div class="label">Related</div>
+          <h3>Simple food swaps for students who eat between classes</h3>
+          <p><a href="nutrition.html">Read more</a></p>
+        </section>
+        <section class="card">
+          <div class="label">Explainer</div>
+          <h3>How much sugar is too much for a daily drink?</h3>
+          <p><a href="nutrition.html">Open nutrition story</a></p>
+        </section>
+        <div class="side-ad">
+          <span class="ad-badge">Sponsored</span>
+          <div style="margin:0 auto;"><svg width="40" height="40" viewBox="0 0 48 48" fill="none"><rect x="6" y="10" width="36" height="28" rx="6" stroke="var(--accent)" stroke-width="2" fill="none"/><rect x="10" y="14" width="12" height="10" rx="2" stroke="var(--accent)" stroke-width="1.5" fill="none"/><line x1="26" y1="18" x2="38" y2="18" stroke="var(--accent)" stroke-width="2"/><line x1="26" y1="22" x2="34" y2="22" stroke="var(--accent)" stroke-width="1.5"/></svg></div>
+          <h3 style="font-size:17px;">Fitbit Charge 7</h3>
+          <p style="font-size:14px;">Track steps, sleep, stress & SpO2. Your campus wellness companion &mdash; RM 849.</p>
+          <a class="btn" href="#ad-fitbit" style="width:100%;text-align:center;">See on Shopee</a>
+        </div>
+      </aside>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="wrap">The Wellness Post &middot; Know Better. Live Well. &middot; JRN209 Online Journalism</div>
+  </footer>
+  <script>
+    // Article poll: show fixed reader percentages after one vote.
+    var pollRows=document.querySelectorAll("#pollOptions .poll-row");
+    var pollStatus=document.getElementById("pollStatus");
+    pollRows.forEach(function(row){
+      row.addEventListener("click",function(){
+        pollRows.forEach(function(item){
+          item.classList.add("voted");
+          item.classList.remove("selected");
+          item.setAttribute("aria-pressed","false");
+        });
+        row.classList.add("selected");
+        row.setAttribute("aria-pressed","true");
+        if(pollStatus)pollStatus.textContent="Vote recorded - here is how readers are responding.";
+      });
+    });
+
+    // Article comments: publish immediately to the first position.
+    (function(){
+      var form=document.getElementById("articleCommentForm");
+      var submit=document.getElementById("articleCommentSubmit");
+      var list=document.getElementById("articleCommentList");
+      var status=document.getElementById("articleCommentStatus");
+      var storeKey="wellness-post-sugar-article-comments";
+      function escapeText(value){
+        return String(value||"").replace(/[&<>"']/g,function(ch){
+          return {"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[ch];
+        });
+      }
+      function addComment(item){
+        if(!list)return;
+        var article=document.createElement("article");
+        article.className="comment-item";
+        article.innerHTML='<div class="comment-meta"><strong>'+escapeText(item.name||"Anonymous reader")+'</strong><span>Sugar report &middot; <span class="comment-time">'+escapeText(item.time||"1s ago")+'</span></span></div><p>'+escapeText(item.message)+'</p>';
+        list.insertBefore(article,list.firstChild);
+        list.scrollTop=0;
+      }
+      function saveComment(item){
+        try{
+          var saved=JSON.parse(localStorage.getItem(storeKey)||"[]");
+          saved.unshift(item);
+          localStorage.setItem(storeKey,JSON.stringify(saved.slice(0,10)));
+        }catch(_){}
+      }
+      function loadSaved(){
+        try{
+          var saved=JSON.parse(localStorage.getItem(storeKey)||"[]");
+          saved.slice().reverse().forEach(addComment);
+        }catch(_){}
+      }
+      window.postArticleComment=function(event){
+        if(event){event.preventDefault();event.stopPropagation();}
+        var name=document.getElementById("articleCommentName");
+        var message=document.getElementById("articleCommentMessage");
+        var text=message&&message.value?message.value.trim():"";
+        if(!text){
+          if(status)status.textContent="Please write a comment before posting.";
+          if(message)message.focus();
+          return false;
+        }
+        var item={name:name&&name.value.trim()?name.value.trim():"Anonymous reader",message:text,time:"1s ago"};
+        addComment(item);
+        saveComment(item);
+        if(form)form.reset();
+        if(status)status.textContent="Posted - your comment is now first in the list.";
+        return false;
+      };
+      if(form)form.addEventListener("submit",window.postArticleComment);
+      if(submit)submit.addEventListener("click",window.postArticleComment);
+      loadSaved();
+    })();
+    document.querySelectorAll('[href^="#ad-"]').forEach(el => {
+      el.addEventListener("click", (e) => {
+        e.preventDefault();
+        const txt = el.textContent;
+        el.textContent = "Ad clicked";
+        setTimeout(() => { el.textContent = txt; }, 2000);
+      });
+    });
+  </script>
+  <script>
+    (function () {
+      var button = document.querySelector('[data-back-button]');
+      if (!button) return;
+      button.addEventListener('click', function () {
+        if (window.history.length > 1) {
+          window.history.back();
+        } else {
+          window.location.href = 'the-wellness-post-sugar-news-package.html';
+        }
+      });
+    })();
+  </script>  <script>
+    (function(){var bannerAds=["mqxzjw3l-1ffcb898517177bf1fe083e1f24974d1.png","mqxzogvb-7e468cfe35eb3a7a5594b7176e5e40f5.png","mqxzq3op-cb32cb48831c3e62f8e27c1a905c9026.png","mqxzqrkt-f8204368afc20427cd5e338d383a6ab5.png","mqxzs2ve-e42b88c20a706746d54e3a2c524fc7df.png"];var imgs=Array.prototype.slice.call(document.querySelectorAll(".banner-ad-img"));var i=0;if(!imgs.length)return;setInterval(function(){i=(i+1)%bannerAds.length;imgs.forEach(function(img){img.src=bannerAds[i]})},8000)})();
+  </script></body>
+</html>
+
+
+
